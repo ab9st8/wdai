@@ -1,0 +1,22 @@
+.square {
+  width: 100px;
+  height: 100px;
+  margin: 0px;
+  display: inline-block;
+}
+
+.grid-container {
+  margin-top: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.square-container {
+  max-width: 100%;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  grid-template-columns: 100px 100px 100px;
+  gap: min(100px, 10vw);
+}

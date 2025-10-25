@@ -1,0 +1,26 @@
+table {
+  border-collapse: collapse;
+  border: 1pt solid black;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+tr th,
+tr td {
+  border: 1pt solid black;
+  padding: 7px;
+  text-align: right;
+}
+
+td.price,
+td.product-id,
+td.stock,
+td.no-stock {
+  font-family: "Inconsolata", monospace;
+}
+
+td.no-stock {
+  font-weight: bold;
+  color: red;
+}
