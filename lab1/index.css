@@ -1,3 +1,7 @@
+*, :root {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -8,6 +12,7 @@ body {
   font-weight: 400;
   padding-top: 20px;
   padding-bottom: 20px;
+  height: 100vh;
 }
 
 header {
@@ -17,11 +22,13 @@ header {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin: 20px;
 }
 
 main {
   width: 600px;
   max-width: 90%;
+  height: 100%;
 }
 
 h1 {
@@ -104,4 +111,26 @@ td.no-stock {
 .image-container span {
   font-size: 14px;
   color: gray;
+}
+
+.square {
+  width: 100px;
+  height: 100px;
+  margin: 0px;
+  display: inline-block;
+}
+
+.grid-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.square-container {
+  max-width: 100%;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  grid-template-columns: 100px 100px 100px;
+  gap: min(100px, 10vw);
 }
