@@ -121,8 +121,6 @@
             .filter((idx) => words[idx][0] == words[idx][0].toLowerCase()) // Don't italicize the first word of a sentence
         );
 
-        console.log(italicIndices);
-
         for (const idx of italicIndices) {
           words[idx] = `<em>${words[idx]}</em>`;
         }
