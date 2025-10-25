@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="index.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,700;1,800;1,900&family=Alegreya:ital,wght@0,400..900;1,400..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>Artykuł · WDAI 2025/2026</title>
+  </head>
+
+  <body>
+    <header>
+      <h1>Jakiś Artykuł</h1>
+      <h2 id="author">Zenon Iksiński</h2>
+      <h2 id="date">25 października 2025</h2>
+    </header>
+
+    <main class="vcontainer">
+      <p class="content">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ipsum
+        neque, sagittis sit amet est a, pulvinar porta nunc. Aenean nisl ipsum,
+        commodo ac blandit id, venenatis non neque. Quisque commodo in ante quis
+        varius. Suspendisse eu auctor nulla. Vivamus sapien libero, congue et
+        tortor nec, placerat iaculis lectus. Nam sit amet ante at metus lacinia
+        gravida nec vel nunc. Curabitur sagittis purus in lorem convallis, id
+        sollicitudin nibh tempus. Aenean lorem nibh, iaculis vel egestas quis,
+        sodales ut elit. Etiam ante risus, volutpat sit amet convallis ut,
+        euismod a eros. Vivamus dignissim nunc vel est pretium ultricies. Donec
+        ullamcorper sed sapien id porttitor. Mauris tempus vel ex quis finibus.
+        Quisque fringilla leo ut metus porta fringilla.
+      </p>
+
+      <p class="content">
+        Mauris ligula diam, ullamcorper id mollis sit amet, dapibus eget nulla.
+        Praesent rhoncus convallis ante, eget eleifend sapien convallis nec. Nam
+        tristique dui sit amet velit blandit, in commodo purus aliquet. Sed nec
+        nisi ex. Vivamus massa magna, rutrum non varius vel, tincidunt tincidunt
+        est. In hac habitasse platea dictumst. Etiam aliquam ex quis sapien
+        efficitur, vitae hendrerit tellus efficitur. Nunc eu neque a enim
+        accumsan faucibus eu at massa. Nullam aliquet et justo a tempus. Nulla
+        facilisi. Donec eget libero vitae ligula fringilla ultricies et non
+        ligula. Nam hendrerit id eros facilisis ullamcorper. Class aptent taciti
+        sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+      </p>
+
+      <p class="content">
+        Nulla eget diam sagittis, vehicula nunc non, maximus orci. Aenean
+        rutrum, nibh et cursus porta, dolor enim mattis elit, eget maximus mi
+        sapien sit amet augue. Quisque quis velit eget arcu commodo cursus.
+        Nulla facilisi. Donec sapien magna, dictum id libero et, placerat
+        consectetur tortor. Nam sapien eros, pretium sed mi vitae, mollis
+        egestas libero. Sed purus libero, tempus non quam vitae, feugiat
+        efficitur magna. Praesent porttitor augue ac molestie commodo.
+      </p>
+    </main>
+
+    <script type="text/javascript">
+      //-- Gently "humanize" the writing --//
+
+      // Good-enough seedable random function
+      // <https://stackoverflow.com/a/19303725>
+      let seed = 1029384756;
+      function _random() {
+        const x = Math.sin(seed++) * 10000;
+        return x - Math.floor(x);
+      }
+
+      // Helper function: random number in range from `a` to `b`
+      function random(a, b) {
+        return Math.floor(_random() * (b - a)) + a;
+      }
+
+      const ps = document.getElementsByClassName("content");
+      for (const p of ps) {
+        const sentences = p.innerText.split(". ");
+        //-- First, insert some line breaks and add variety to the sentence endings --//
+
+        // Generate random indices for the sentences to generate newlines for
+        const newlineIndices = Array.from(
+          new Array(random(0, Math.max(1, Math.floor(sentences.length / 2))))
+            .keys()
+            .map((e) => random(0, sentences.length))
+        );
+
+        for (const idx of newlineIndices) {
+          sentences[idx] = `<br>&emsp;${sentences[idx]}`;
+        }
+
+        // A simple `sentences.join` wouldn't work here --- it would choose
+        // a single delimiter for the entire paragraph
+        const text = sentences.reduce(
+          (acc, sentence) =>
+            `${acc}${
+              [".", "!", "?"][[0, 0, 1, ...new Array(3).keys()][random(0, 6)]] // Full stops are a little more probable than the others
+            } ${sentence}`
+        );
+
+        //-- Then, italicize some words --//
+        const words = text.split(' ')
+        const italicIndices = Array.from(
+          new Array(random(0, Math.max(1, Math.floor(words.length / 10))))
+            .keys()
+            .map((_) => random(0, words.length))
+            .filter(idx => words[idx][0] == words[idx][0].toLowerCase()) // Don't italicize the first word of a sentence
+        );
+
+        console.log(italicIndices)
+        
+        for (const idx of italicIndices) {
+          words[idx] = `<em>${words[idx]}</em>`
+        }
+
+        p.innerHTML = words.join(' ')
+      }
+    </script>
+  </body>
+</html>
