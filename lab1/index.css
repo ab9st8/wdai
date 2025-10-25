@@ -1,4 +1,5 @@
-*, :root {
+*,
+:root {
   box-sizing: border-box;
 }
 
@@ -12,7 +13,6 @@ body {
   font-weight: 400;
   padding-top: 20px;
   padding-bottom: 20px;
-  height: 100vh;
 }
 
 header {
@@ -29,6 +29,12 @@ main {
   width: 600px;
   max-width: 90%;
   height: 100%;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
 }
 
 h1 {
@@ -87,15 +93,6 @@ td.no-stock {
   color: gray;
 }
 
-.vcontainer {
-  align-self: center;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  justify-content: center;
-  align-items: center;
-}
-
 .content {
   font-family: "Alegreya";
 }
@@ -121,6 +118,7 @@ td.no-stock {
 }
 
 .grid-container {
+  margin-top: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
