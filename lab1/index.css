@@ -4,7 +4,7 @@ body {
   display: flex;
   background-color: #f2f3f4;
   flex-direction: column;
-  font-family: 'Alegreya Sans';
+  font-family: "Alegreya Sans";
   font-weight: 400;
 }
 
@@ -12,6 +12,9 @@ header {
   width: 900px;
   max-width: 90%;
   align-self: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 main {
@@ -20,17 +23,22 @@ main {
 }
 
 h1 {
-  font-family: 'Alegreya';
   font-size: 3em;
   font-style: italic;
+  margin: 0;
 }
 
 h2 {
   font-weight: 500;
+  margin: 0;
 }
 
 p {
   font-size: 19px;
+}
+
+#author {
+  color: gray;
 }
 
 #date {
@@ -45,4 +53,8 @@ p {
   gap: 5px;
   justify-content: center;
   align-items: center;
+}
+
+.content {
+  font-family: "Alegreya";
 }
