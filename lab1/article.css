@@ -1,0 +1,21 @@
+#author {
+  color: gray;
+}
+
+#date {
+  font-style: italic;
+  color: gray;
+}
+
+.image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.image-container span {
+  font-size: 14px;
+  color: gray;
+}
