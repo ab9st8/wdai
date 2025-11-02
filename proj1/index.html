@@ -7,7 +7,7 @@
   </head>
   <body>
     <noscript>this app is non-functional without javascript. :(</noscript>
-    
+
     <nav>
       <h1 id="nav-title">peer-to-peer</h1>
       <a href="./index.html">home</a>
@@ -31,20 +31,32 @@
 
       <input
         type="text"
-        id="message-input"
-        placeholder="type your message here..."
+        id="peerid-input"
+        placeholder="enter peer ID to connect..."
         autofocus
       />
-      <button id="send-button">Send</button>
+
+      <button
+        type="button"
+        id="connect-button"
+      >connect</button>
+
+      <input
+        type="text"
+        id="message-input"
+        placeholder="type your message here..."
+      />
+      <button id="send-button">send</button>
     </main>
   </body>
 
   <script type="module">
+
     import { generateSlug } from "./lib.js";
     import { Peer } from "https://esm.sh/peerjs@1.5.5?bundle-deps";
     const slug = generateSlug();
     const peer = new Peer(slug);
-    console.log(peer);
     document.getElementById("userslug").textContent = slug;
+
   </script>
 </html>
