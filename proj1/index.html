@@ -12,19 +12,19 @@
       <a href="./faq.html">about this</a>
       <a href="./about.html">about me</a>
     </nav>
- 
-    <div>you are: <span id="userslug">miraculous-butterfly</span>!</div>
-    
+
+    <div id="userslug-container">you are: <span id="userslug"></span>!</div>
+
     <main>
       <div id="messages-container">
-        <div class="message received">
+        <!-- <div class="message received">
           <span class="message-sender">curious-lion:</span>
           <span class="message-text">hello there!</span>
         </div>
         <div class="message sent">
           <span class="message-sender">miraculous-butterfly:</span>
           <span class="message-text">hi!</span>
-        </div>
+        </div> -->
       </div>
 
       <input
@@ -36,4 +36,13 @@
       <button id="send-button">Send</button>
     </main>
   </body>
+
+  <script type="module">
+    import { generateSlug } from "./lib.js";
+    import { Peer } from "https://esm.sh/peerjs@1.5.5?bundle-deps";
+    const slug = generateSlug();
+    const peer = new Peer(slug);
+    console.log(peer);
+    document.getElementById("userslug").textContent = slug;
+  </script>
 </html>
