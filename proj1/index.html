@@ -7,9 +7,33 @@
   </head>
   <body>
     <nav>
+      <h1 id="nav-title">peer-to-peer</h1>
       <a href="./index.html">home</a>
       <a href="./faq.html">about this</a>
       <a href="./about.html">about me</a>
     </nav>
+ 
+    <div>you are: <span id="userslug">miraculous-butterfly</span>!</div>
+    
+    <main>
+      <div id="messages-container">
+        <div class="message received">
+          <span class="message-sender">curious-lion:</span>
+          <span class="message-text">hello there!</span>
+        </div>
+        <div class="message sent">
+          <span class="message-sender">miraculous-butterfly:</span>
+          <span class="message-text">hi!</span>
+        </div>
+      </div>
+
+      <input
+        type="text"
+        id="message-input"
+        placeholder="type your message here..."
+        autofocus
+      />
+      <button id="send-button">Send</button>
+    </main>
   </body>
 </html>
