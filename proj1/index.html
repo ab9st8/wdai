@@ -39,24 +39,40 @@
       <button
         type="button"
         id="connect-button"
+        onclick="onConnect()"
       >connect</button>
 
-      <input
-        type="text"
-        id="message-input"
-        placeholder="type your message here..."
-      />
-      <button id="send-button">send</button>
+      <div>
+        <input
+          type="text"
+          id="message-input"
+          placeholder="type your message here..."
+        />
+        <button id="send-button">send</button>
+      </div>
     </main>
   </body>
 
   <script type="module">
-
     import { generateSlug } from "./lib.js";
     import { Peer } from "https://esm.sh/peerjs@1.5.5?bundle-deps";
+
+    // Set up new peer for this tab
     const slug = generateSlug();
     const peer = new Peer(slug);
+
+    // Display user's slug
     document.getElementById("userslug").textContent = slug;
 
+    function onConnect() {
+      const peerId = document.getElementById("peerid-input").value;
+      const conn = peer.connect(peerId);
+
+      conn.on("open", () => {
+        console.log("Connected to:", peerId);
+      });
+    }
+
+    window.onConnect = onConnect;
   </script>
 </html>
