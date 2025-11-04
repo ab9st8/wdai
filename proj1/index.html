@@ -3,13 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>peer-to-peer</title>
+    <title>charlie-charlie</title>
   </head>
   <body>
     <noscript>this app is non-functional without javascript. :(</noscript>
 
     <nav>
-      <h1 id="nav-title">peer-to-peer</h1>
+      <h1 id="nav-title">charlie-charlie</h1>
       <a href="./index.html">home</a>
       <a href="./faq.html">about this</a>
       <a href="./about.html">about me</a>
@@ -36,11 +36,9 @@
         autofocus
       />
 
-      <button
-        type="button"
-        id="connect-button"
-        onclick="onConnect()"
-      >connect</button>
+      <button type="button" id="connect-button" onclick="onConnect()">
+        connect
+      </button>
 
       <div>
         <input
@@ -48,7 +46,9 @@
           id="message-input"
           placeholder="type your message here..."
         />
-        <button id="send-button">send</button>
+        <button type="button" id="send-button" onclick="onSendMessage()">
+          send
+        </button>
       </div>
     </main>
   </body>
@@ -60,19 +60,46 @@
     // Set up new peer for this tab
     const slug = generateSlug();
     const peer = new Peer(slug);
+    document.getElementById("userslug").textContent = peer.id;
+    
+    let connection = null;
 
-    // Display user's slug
-    document.getElementById("userslug").textContent = slug;
+    // Handle oncoming connections
+    peer.on("connection", (conn) => {
+      console.log("Incoming connection from:", conn.peer);
+      conn.on("data", (data) => {
+        console.log("Received:", data);
+      });
+    });
 
+    
     function onConnect() {
       const peerId = document.getElementById("peerid-input").value;
       const conn = peer.connect(peerId);
 
       conn.on("open", () => {
         console.log("Connected to:", peerId);
+        connection = conn;
       });
     }
 
+    function onSendMessage() {
+      const messageInput = document.getElementById("message-input");
+      const message = messageInput.value;
+      messageInput.value = "";
+
+      console.log("sending message:", message);
+
+      if (connection && connection.open) {
+        connection.send(message);
+        console.log("message sent!");
+      } else {
+        console.log("no open connection to send message through.");
+      }
+    }
+
+    // TODO: move this to a separate module
     window.onConnect = onConnect;
+    window.onSendMessage = onSendMessage;
   </script>
 </html>
