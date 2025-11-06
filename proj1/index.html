@@ -69,6 +69,12 @@
       console.log("Incoming connection from:", conn.peer);
       conn.on("data", (data) => {
         console.log("Received:", data);
+        document.getElementById("messages-container").innerHTML += `
+          <div class="message received">
+            <span class="message-sender">${conn.peer}:</span>
+            <span class="message-text received">${data}</span>
+          </div>
+        `;
       });
     });
 
@@ -93,6 +99,13 @@
       if (connection && connection.open) {
         connection.send(message);
         console.log("message sent!");
+        messages.push({ sender: peer.id, text: message, type: "sent" });
+        document.getElementById("messages-container").innerHTML += `
+          <div class="message sent">
+            <span class="message-sender">${peer.id}:</span>
+            <span class="message-text sent">${message}</span>
+          </div>
+        `;
       } else {
         console.log("no open connection to send message through.");
       }
