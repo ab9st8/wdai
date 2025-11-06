@@ -3,54 +3,58 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>charlie-charlie</title>
+    <link rel="stylesheet" href="./index.css" />
+    <title>charlee</title>
   </head>
   <body>
     <noscript>this app is non-functional without javascript. :(</noscript>
 
     <nav>
-      <h1 id="nav-title">charlie-charlie</h1>
-      <a href="./index.html">home</a>
-      <a href="./faq.html">about this</a>
-      <a href="./about.html">about me</a>
+      <div id="nav-title">
+        <h1>charlee</h1>
+        <div id="nav-links">
+          <a href="./faq.html">about this</a>
+          <a href="./about.html">about me</a>
+        </div>
+      </div>
+      <div id="userslug-container">
+        you are:<br /><span id="userslug">...</span>!
+      </div>
     </nav>
 
-    <div id="userslug-container">you are: <span id="userslug">...</span>!</div>
-
     <main>
-      <div id="messages-container">
-        <!-- <div class="message received">
-          <span class="message-sender">curious-lion:</span>
-          <span class="message-text">hello there!</span>
-        </div>
-        <div class="message sent">
-          <span class="message-sender">miraculous-butterfly:</span>
-          <span class="message-text">hi!</span>
-        </div> -->
-      </div>
+      <div id="messages-container"></div>
 
-      <input
-        type="text"
-        id="peerid-input"
-        placeholder="enter peer ID to connect..."
-        autofocus
-      />
-
-      <button type="button" id="connect-button" onclick="onConnect()">
-        connect
-      </button>
-
-      <div>
+      <div id="connection-modal">
         <input
           type="text"
-          id="message-input"
-          placeholder="type your message here..."
+          id="peerid-input"
+          placeholder="enter peer ID to connect to..."
         />
+        <button type="button" id="connect-button" onclick="onConnect()">
+          connect
+        </button>
+      </div>
+
+      <div id="message-input-container">
+        <textarea
+          type="text"
+          id="message-input"
+          rows="1"
+          placeholder="type your message here..."
+        ></textarea>
         <button type="button" id="send-button" onclick="onSendMessage()">
           send
         </button>
       </div>
     </main>
+
+    <!-- TODO: add footer -->
+    <!-- <footer
+      style="position: fixed; bottom: 5pt; width: 100%; text-align: center; font-size: 0.8em; z-index: 1000;"
+    >
+      <p>Antoni Chmiela 2025. <a href="./about.html">about me</a></p>
+    </footer> -->
   </body>
 
   <script type="module">
@@ -61,7 +65,7 @@
     const slug = generateSlug();
     const peer = new Peer(slug);
     document.getElementById("userslug").textContent = peer.id;
-    
+
     let connection = null;
 
     // Handle oncoming connections
@@ -78,14 +82,20 @@
       });
     });
 
-    
     function onConnect() {
+      const modal = document.getElementById("connection-modal");
+      modal.style.display = "none";
       const peerId = document.getElementById("peerid-input").value;
       const conn = peer.connect(peerId);
 
       conn.on("open", () => {
         console.log("Connected to:", peerId);
         connection = conn;
+        document.getElementById("messages-container").innerHTML += `
+          <div class="message system">
+            <span class="message-text system">talking with ${peerId}!</span>
+          </div>
+        `;
       });
     }
 
@@ -98,12 +108,16 @@
 
       if (connection && connection.open) {
         connection.send(message);
-        console.log("message sent!");
-        messages.push({ sender: peer.id, text: message, type: "sent" });
         document.getElementById("messages-container").innerHTML += `
           <div class="message sent">
             <span class="message-sender">${peer.id}:</span>
             <span class="message-text sent">${message}</span>
+          </div>
+        `;
+        document.getElementById("messages-container").innerHTML += `
+          <div class="message received">
+            <span class="message-sender">${conn.peer}:</span>
+            <span class="message-text received">${data}</span>
           </div>
         `;
       } else {
@@ -114,5 +128,25 @@
     // TODO: move this to a separate module
     window.onConnect = onConnect;
     window.onSendMessage = onSendMessage;
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        document.activeElement.blur();
+      }
+    });
+
+    document.getElementById("peerid-input").addEventListener("keydown", (e) => {
+      if (e.metaKey && e.key === "Enter") {
+        onConnect();
+      }
+    });
+
+    document
+      .getElementById("message-input")
+      .addEventListener("keydown", (e) => {
+        if (e.metaKey && e.key === "Enter") {
+          onSendMessage();
+        }
+      });
   </script>
 </html>

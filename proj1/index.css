@@ -1,6 +1,277 @@
+@import url("https://fonts.googleapis.com/css2?family=Libertinus+Mono&display=swap");
+
 *,
 :root {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+body {
+  font-family: "Libertinus Mono", monospace;
+  background-color: #f8f8f8;
+  color: #111;
+
+  height: 100vh;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+nav {
+  flex: 1;
+
+  background-color: #c435350a;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 1rem;
+
+  height: 100%;
+}
+
+main {
+  flex: 4;
+
+  height: 100%;
+
+  border-left: #c43535 1.0pt solid;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+a {
+  color: transparent;
+  text-shadow: 1px 1px 0px #111;
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  /* text-decoration: underline; */
+  color: #c43535;
+}
+
+a:focus {
+  outline: 1.0pt solid #c43535;
+  outline-offset: 1.5pt;
+}
+
+input, textarea {
+  font-family: "Libertinus Mono", monospace;
+  font-size: 1em;
+  padding: 0.5em;
+  margin: 0.5em;
+  background-color: #f8f8f8;
+  border: 1.0pt solid #c43535;
+  background-color: #f8f8f8;
+  width: 400px;
+  resize: none;
+  max-width: 90vw;
+}
+
+input:focus, textarea:focus {
+  outline: 1.0pt solid #c43535;
+  outline-offset: 1.5pt;
+}
+
+button {
+  font-family: "Libertinus Mono", monospace;
+  font-size: 1em;
+  padding: 0.5em;
+  margin: 0.5em;
+  background-color: #c43535;
+  color: #f8f8f8;
+  border: 1.0pt solid #c43535;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #a32b2b;
+  border-color: #a32b2b;
+}
+
+button:focus {
+  outline: 1.0pt solid #c43535;
+  outline-offset: 1.5pt;
+}
+
+#connection-modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: repeating-linear-gradient(
+    45deg,
+    #c43535 0,
+    #c43535 1.0pt,
+    transparent 0,
+    transparent 50%
+  );
+  background-size: 15px 15px;
+  background-color: #f8f8f8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: move 2s linear infinite;
+}
+
+@keyframes move {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 15px 0px;
+  }
+}
+
+#message-input-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: #c4353510;
+  border-top: #c43535 1.0pt solid;
+}
+
+#message-input {
+  width: 100%;
+}
+
+.message-sender {
+  color: #aaa;
+  /* text-shadow: 1px 1px 0px #111; */
+}
+
+#nav-title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+#nav-title h1 {
+  text-align: end;
+  text-shadow: 1pt 1pt 0pt #c43535;
+}
+
+#nav-links {
+  gap: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+#nav-links span {
+  display: none;
+}
+
+#userslug-container {
+  color: #aaa;
+  margin: 1rem;
+  text-align: left;
+  align-self: flex-start;
+}
+
+#userslug {
+  color: #c43535;
+  text-shadow: 1px 1px 0px #111;
+  animation: blink 0.5s step-start infinite alternate;
+}
+
+#messages-container {
+  flex: 1;
+  width: 100%;
+  /* padding: 1rem; */
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  /* align-items: stretch; */
+  /* gap: 0.5rem; */
+}
+
+.message {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding: 0.5em;
+}
+
+.message.system {
+  justify-content: center;
+  text-align: center;
+  background-color: #c4353510;
+  border-bottom: #c43535 1.0pt solid;
+}
+
+.message.sent {
+  background-color: #f0f0f0;
+  color: #888;
+}
+
+.message-text.received {
+  justify-content: flex-start;
+  background-color: #f8f8f8;
+}
+
+
+@keyframes blink {
+  50% {
+    color: #111;
+    text-shadow: 1px 1px 0px #c43535;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  body {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  nav {
+    align-items: center;
+    justify-content: space-between;
+    flex: 0;
+  }
+
+  #nav-title {
+    align-items: center;
+  }
+
+  #nav-title h1 {
+    text-align: center;
+  }
+
+  #nav-links {
+    flex-direction: row;
+    text-align: center;
+    align-items: center;
+    gap: 20px;
+  }
+
+  #nav-links span {
+    display: inline;
+  }
+
+  main {
+    border-left: none;
+    border-top: #c43535 1.0pt solid;
+  }
 }
