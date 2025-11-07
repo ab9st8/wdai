@@ -17,8 +17,22 @@
           <a href="./about.html">about me</a>
         </div>
       </div>
-      <div id="userslug-container">
-        you are:<br /><span id="userslug">...</span>!
+      <div>
+        <div id="userslug-container">
+          you are:<br /><span id="userslug">...</span>!
+        </div>
+        <footer
+          style="
+            position: absolute;
+            bottom: 5pt;
+            width: 100%;
+            text-align: center;
+            font-size: 0.8em;
+            z-index: 1000;
+          "
+        >
+          <p>Antoni Chmiela, 2025</p>
+        </footer>
       </div>
     </nav>
 
@@ -48,13 +62,6 @@
         </button>
       </div>
     </main>
-
-    <!-- TODO: add footer -->
-    <!-- <footer
-      style="position: fixed; bottom: 5pt; width: 100%; text-align: center; font-size: 0.8em; z-index: 1000;"
-    >
-      <p>Antoni Chmiela 2025. <a href="./about.html">about me</a></p>
-    </footer> -->
   </body>
 
   <script type="module">
@@ -75,8 +82,11 @@
         console.log("Received:", data);
         document.getElementById("messages-container").innerHTML += `
           <div class="message received">
-            <span class="message-sender">${conn.peer}:</span>
-            <span class="message-text received">${data}</span>
+            <div class="message-sender">${conn.peer}:</div>
+            <div class="message-text received">${data.replaceAll(
+              "\n",
+              "<br/>"
+            )}</div>
           </div>
         `;
       });
@@ -100,9 +110,9 @@
     }
 
     function onSendMessage() {
-      const messageInput = document.getElementById("message-input");
-      const message = messageInput.value;
-      messageInput.value = "";
+      const messageTextarea = document.getElementById("message-input");
+      const message = messageTextarea.value;
+      messageTextarea.value = "";
 
       console.log("sending message:", message);
 
@@ -110,14 +120,11 @@
         connection.send(message);
         document.getElementById("messages-container").innerHTML += `
           <div class="message sent">
-            <span class="message-sender">${peer.id}:</span>
-            <span class="message-text sent">${message}</span>
-          </div>
-        `;
-        document.getElementById("messages-container").innerHTML += `
-          <div class="message received">
-            <span class="message-sender">${conn.peer}:</span>
-            <span class="message-text received">${data}</span>
+            <div class="message-sender">${peer.id}:</div>
+            <div class="message-text sent">${message.replaceAll(
+              "\n",
+              "<br/>"
+            )}</div>
           </div>
         `;
       } else {
@@ -148,5 +155,20 @@
           onSendMessage();
         }
       });
+
+    document.getElementById("userslug").addEventListener("click", () => {
+      const slugText = document.getElementById("userslug").textContent;
+      navigator.clipboard.writeText(slugText).then(() => {
+        console.log("Copied user slug to clipboard:", slugText);
+        document.getElementById("userslug").textContent = "copied";
+        setTimeout(() => {
+          document.getElementById("userslug").textContent = slugText;
+        }, 1000);
+      });
+    });
+
+    window.addEventListener("beforeunload", () => {
+      peer.destroy();
+    });
   </script>
 </html>
