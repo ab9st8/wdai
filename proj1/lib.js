@@ -10,12 +10,9 @@ function placeDraggable(draggable, storageKey, clamp) {
   if (position !== null) {
     const parsed = JSON.parse(position);
 
-    const clampedX = clamp.x(parsed.x);
-    const clampedY = clamp.y(parsed.y);
-
     // We clamp for safety when changing viewports (completely unrealistic but just in case)
-    draggable.x = clampedX;
-    draggable.y = clampedY;
+    draggable.x = clamp.x(parsed.x);
+    draggable.y = clamp.y(parsed.y);
   }
 }
 
@@ -30,11 +27,15 @@ export function initDraggable(
     container,
     trigger: $trigger,
     containerFriction: 0.6,
+    maxVelocity: 100,
+    cursor: {
+      onHover: "move",
+      onGrab: "move",
+    },
     releaseEase: spring({
       stiffness: 6000,
       damping: 75,
     }),
-    maxVelocity: 100,
     onSettle: () => {
       const newPosition = {
         x: draggable.x,
