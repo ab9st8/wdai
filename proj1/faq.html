@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -126,7 +126,7 @@
       const body = document.getElementById("message-body")?.value || "";
 
       let res;
-      
+
       try {
         res = await fetch("http://localhost:6969/notification", {
           method: "POST",

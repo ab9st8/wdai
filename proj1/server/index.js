@@ -26,7 +26,7 @@ ${body}
 
   // normally we'd do more with this --- maybe sanitize and use an email sender or something.
   console.log(message);
- 
+
   res.json({ status: "ok" });
 });
 
@@ -34,7 +34,7 @@ app.get("/", (_, res) =>
   res.send({
     hey: "charlee notification server here!",
     superSecretApiKey: "d34db33f",
-  })
+  }),
 );
 
 const server = app.listen(PORT, () => {

@@ -15,7 +15,7 @@ export function initDraggable(
   $target,
   container,
   storageKey,
-  $trigger = $target
+  $trigger = $target,
 ) {
   const draggable = createDraggable($target, {
     container,
@@ -49,18 +49,12 @@ export function initDraggable(
   return draggable;
 }
 
-const NAV_WIDTH = document.querySelector("nav").offsetWidth;
-const NAV_HEIGHT = document.querySelector("nav").offsetHeight;
-
-const MAIN_WIDTH = document.querySelector("main").offsetWidth;
-const MAIN_HEIGHT = document.querySelector("main").offsetHeight;
-  
 export const initSidebarToggle = () =>
   initDraggable(
     document.querySelector("#toggle-button-wrapper"),
     document.querySelector("main"),
     "button-position",
-    document.querySelector("#drag-handle")
+    document.querySelector("#drag-handle"),
   );
 
 export const initFooter = () =>
@@ -81,7 +75,7 @@ export function onToggleSidebar(footerDraggable) {
     $sidebar.style.display = "flex";
     $toggleSidebarButton.innerText = "close";
     requestAnimationFrame(() =>
-      placeDraggable(footerDraggable, "footer-position")
+      placeDraggable(footerDraggable, "footer-position"),
     );
   }
   document.activeElement.blur();

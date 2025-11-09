@@ -1,6 +1,6 @@
 {
-  "name": "proj1-notification-server",
-  "version": "1.0.0",
+  "name": "charlee-notification-server",
+  "version": "0.0.1",
   "private": true,
   "main": "index.js",
   "type": "module",

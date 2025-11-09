@@ -12,14 +12,14 @@ try {
   await fetch("http://localhost:9000/myapp")
     .then(
       async (response) =>
-        (peer = (await response.ok)
+        (peer = (response.ok)
           ? (peer = new Peer(slug, {
               host: "localhost",
               port: 9000,
               path: "/myapp",
               debug: 3,
             }))
-          : new Peer(slug, { debug: 3 }))
+          : new Peer(slug, { debug: 3 })),
     )
     .catch((_) => (peer = new Peer(slug)));
 } catch {}
@@ -57,10 +57,10 @@ const $connectionModal = document.querySelector(SELECTORS.connectionModal);
 const $messageInput = document.querySelector(SELECTORS.messageInput);
 const $sendButton = document.querySelector(SELECTORS.sendButton);
 const $toggleSidebarButton = document.querySelector(
-  SELECTORS.toggleSidebarButton
+  SELECTORS.toggleSidebarButton,
 );
 const $toggleButtonWrapper = document.querySelector(
-  SELECTORS.toggleButtonWrapper
+  SELECTORS.toggleButtonWrapper,
 );
 
 $userslug.textContent = peer.id;
@@ -79,7 +79,7 @@ peer.on("connection", (conn) => {
             <div class="message-sender">${conn.peer}:</div>
             <div class="message-text received">${data.replaceAll(
               "\n",
-              "<br/>"
+              "<br/>",
             )}</div>
           </div>
         `;
@@ -148,7 +148,7 @@ function onSendMessage() {
             <div class="message-sender">${peer.id}:</div>
             <div class="message-text sent">${message.replaceAll(
               "\n",
-              "<br/>"
+              "<br/>",
             )}</div>
           </div>
         `;

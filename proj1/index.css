@@ -117,11 +117,12 @@ form {
 }
 
 #form-header select {
-  font-family: 'Libertinus Mono', monospace;
+  font-family: "Libertinus Mono", monospace;
   width: min-content;
 }
 
-select, ::picker(select) {
+select,
+::picker(select) {
   border-radius: 0;
   border: 1pt solid #111;
 }
