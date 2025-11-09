@@ -1,5 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Libertinus+Mono&display=swap");
 
+:root {
+  --bg-primary: #f8f8f8;
+  --bg-secondary: #f5f1f1;
+  --accent: #c43535;
+  --fg: #111111;
+}
+
 *,
 :root {
   margin: 0;
@@ -8,14 +15,14 @@
 }
 
 *:focus {
-  outline: 1pt solid #c43535;
+  outline: 1pt solid var(--accent);
   outline-offset: 1.5pt;
 }
 
 body {
   font-family: "Libertinus Mono", monospace;
-  background-color: #f8f8f8;
-  color: #111;
+  background-color: var(--bg-primary);
+  color: var(--fg);
 
   height: 100dvh;
 
@@ -29,14 +36,14 @@ body {
 nav {
   flex: 1;
   max-width: 250px;
-  background-color: #c435350a;
+  background-color: var(--bg-secondary);
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   padding: 1rem;
   height: 100%;
-  border-right: #c43535 1pt solid;
+  border-right: var(--accent) 1pt solid;
 }
 
 #nav-title {
@@ -49,8 +56,8 @@ noscript {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #c43535;
-  color: #f8f8f8;
+  background-color: var(--accent);
+  color: var(--bg-primary);
   text-align: center;
   display: flex;
   place-items: center;
@@ -62,7 +69,7 @@ main {
 
   height: 100%;
 
-  gap: 4rem;
+  gap: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -71,7 +78,7 @@ main {
 }
 
 a {
-  color: #c43535;
+  color: var(--accent);
   text-decoration: none;
 }
 
@@ -81,7 +88,7 @@ a:focus {
 }
 
 a:focus {
-  outline: 1pt solid #c43535;
+  outline: 1pt solid var(--accent);
   outline-offset: 1.5pt;
 }
 
@@ -113,10 +120,12 @@ form {
 }
 
 #form-header input {
-  flex: 1;
+  flex: 1 3;
+  max-width: 65%;
 }
 
 #form-header select {
+  /* flex: 1 0; */
   font-family: "Libertinus Mono", monospace;
   width: min-content;
 }
@@ -124,42 +133,41 @@ form {
 select,
 ::picker(select) {
   border-radius: 0;
-  border: 1pt solid #111;
+  border: 1pt solid var(--fg);
 }
 
 form textarea {
   width: 100%;
-  background-color: #f8f8f8;
+  background-color: var(--bg-primary);
 }
 
-input {
+input,
+textarea {
   font-family: "Libertinus Mono", monospace;
   position: relative;
   font-size: 1em;
   padding: 0.5em;
-  width: 400px;
-  border: 1pt solid #c43535;
+  border: 1pt solid var(--accent);
   border-radius: 0;
+}
+
+input {
+  width: 400px;
   max-width: 70%;
   height: 2rem;
   background-color: #fcfcfc;
 }
 
 textarea {
-  font-family: "Libertinus Mono", monospace;
-  position: relative;
-  font-size: 1em;
-  padding: 0.5em;
   margin: 0.5em;
-  background-color: #f8f8f8;
-  border: 1pt solid #c43535;
+  background-color: var(--bg-primary);
   resize: none;
   max-width: 90vw;
 }
 
 input:focus,
 textarea:focus {
-  outline: 1pt solid #c43535;
+  outline: 1pt solid var(--accent);
   outline-offset: 1.5pt;
 }
 
@@ -168,9 +176,9 @@ button {
   font-size: 1em;
   padding: 0.5em;
   margin: 0.5em;
-  background-color: #c43535;
-  color: #f8f8f8;
-  border: 1pt solid #c43535;
+  background-color: var(--accent);
+  color: var(--bg-primary);
+  border: 1pt solid var(--accent);
   cursor: pointer;
   height: 2rem;
   display: flex;
@@ -181,12 +189,12 @@ button {
 }
 
 button:hover {
-  background-color: #f8f8f8;
-  color: #c43535;
+  background-color: var(--bg-primary);
+  color: var(--accent);
 }
 
 button:focus {
-  outline: 1pt solid #c43535;
+  outline: 1pt solid var(--accent);
   outline-offset: 1.5pt;
 }
 
@@ -212,13 +220,13 @@ button:focus {
   height: 100%;
   background-image: repeating-linear-gradient(
     315deg,
-    #c43535 0,
-    #c43535 1pt,
+    var(--accent) 0,
+    var(--accent) 1pt,
     transparent 0,
     transparent 50%
   );
   background-size: 15px 15px;
-  background-color: #f8f8f8;
+  background-color: var(--bg-primary);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -240,12 +248,11 @@ button:focus {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-
   position: absolute;
   bottom: 0;
   width: 100%;
-  background-color: #c4353510;
-  border-top: #c43535 1pt solid;
+  background-color: var(--bg-secondary);
+  border-top: var(--accent) 1pt solid;
 }
 
 #message-input {
@@ -267,7 +274,7 @@ button:focus {
 
 #nav-title h1 {
   text-align: end;
-  text-shadow: 1pt 1pt 0pt #c43535;
+  text-shadow: 1pt 1pt 0pt var(--accent);
   line-height: 1em;
   margin: 0;
 }
@@ -292,8 +299,8 @@ button:focus {
 }
 
 #userslug {
-  color: #c43535;
-  text-shadow: 1px 1px 0px #111;
+  color: var(--accent);
+  text-shadow: 1px 1px 0px var(--fg);
   animation: blink 0.5s step-start infinite alternate;
   cursor: copy;
 }
@@ -301,27 +308,33 @@ button:focus {
 #messages-container {
   flex: 1;
   width: 100%;
+  height: 100%;
   overflow-y: auto;
+  overscroll-behavior: contain;
   overflow-wrap: anywhere;
   display: flex;
   flex-direction: column;
 }
 
 .message {
+  flex: 1;
   width: 100%;
-  display: flex;
+  display: inline-flex;
   flex-direction: row;
   align-items: center;
+  justify-content: flex-start;
   gap: 10px;
   min-height: 2rem;
+  max-height: none;
   padding: 0.5em;
 }
 
 .message.system {
   justify-content: center;
   text-align: center;
-  background-color: #c4353510;
-  border-bottom: #c43535 1pt solid;
+  z-index: 1000;
+  background-color: var(--bg-secondary);
+  border-bottom: var(--accent) 1pt solid;
 }
 
 .message-sender {
@@ -340,21 +353,20 @@ button:focus {
 }
 
 .message-text.received {
-  justify-content: flex-start;
-  background-color: #f8f8f8;
+  background-color: var(--bg-primary);
 }
 
 .message-text.system {
-  color: #c43535;
+  color: var(--accent);
 }
 
 footer {
   position: absolute;
   bottom: 0;
   right: -1px; /* i don't know why but with 0, it starts off that one pixel to the left lul. the red border gets doubled and it looks ugly */
-  background-color: #f8f8f8;
-  color: #c43535;
-  border: #c43535 solid 1pt;
+  background-color: var(--bg-primary);
+  color: var(--accent);
+  border: var(--accent) solid 1pt;
   padding: 2px 5px;
   font-size: 0.8rem;
   cursor: move;
@@ -421,9 +433,9 @@ footer.visible {
 #drag-handle {
   font-size: 0.7rem;
   /* cursor: move; */
-  background-color: #f8f8f8;
-  color: #c43535;
-  border: #c43535 solid 1pt;
+  background-color: var(--bg-primary);
+  color: var(--accent);
+  border: var(--accent) solid 1pt;
   padding: 2pt 3pt;
   opacity: 0;
   user-select: none;
@@ -449,14 +461,14 @@ footer.visible {
   left: 0;
   background-image: repeating-linear-gradient(
     315deg,
-    #c43535 0,
-    #c43535 1pt,
+    var(--accent) 0,
+    var(--accent) 1pt,
     transparent 0,
     transparent 50%
   );
   border-radius: 0px; /* a little rounded for no reason on safari, i think this fixes that */
   background-size: 15px 15px;
-  background-color: #f8f8f8;
+  background-color: var(--bg-primary);
   animation: move 2s linear infinite;
   z-index: 2000;
 }
@@ -464,20 +476,20 @@ footer.visible {
 textarea:disabled {
   background-image: repeating-linear-gradient(
     315deg,
-    #c43535 0,
-    #c43535 1pt,
+    var(--accent) 0,
+    var(--accent) 1pt,
     transparent 0,
     transparent 50%
   );
   background-size: 15px 15px;
-  background-color: #f8f8f8;
+  background-color: var(--bg-primary);
   animation: move 2s linear infinite;
 }
 
 @keyframes blink {
   50% {
-    color: #111;
-    text-shadow: 1px 1px 0px #c43535;
+    color: var(--fg);
+    text-shadow: 1px 1px 0px var(--accent);
   }
 }
 
@@ -492,7 +504,7 @@ textarea:disabled {
     padding: 0.5em;
     flex: 0;
     border-right: none;
-    border-bottom: #c43535 1pt solid;
+    border-bottom: var(--accent) 1pt solid;
     max-width: unset;
   }
 

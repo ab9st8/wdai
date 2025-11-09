@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -31,6 +31,8 @@
         draggable elements, but apart from that doesn't use anything other than
         basic HTML, CSS and JavaScript.
       </p>
+
+      <p>caveat: it won't work if you're behind a symmetrical NAT.</p>
 
       <p>
         you can look at the code
@@ -135,9 +137,6 @@
         });
       } catch (err) {
       } finally {
-        if (!res.ok) {
-        } // disturb the user not......
-
         const submitBtn = document.getElementById("submit-email");
         if (submitBtn) {
           submitBtn.textContent = "sent";
