@@ -14,12 +14,12 @@
   <body>
     <nav>
       <div id="nav-title">
-        <h1>about this</h1>
         <div id="nav-links">
-          <a href="./index.html">home</a>
+          <a href="./index.html">charlee</a>
+          <h1>about this</h1>
           <a href="./about.html">about me</a>
         </div>
-        <footer>antoni chmiela 2025</footer>
+        <footer>antoni<br />chmiela<br />2025</footer>
       </div>
     </nav>
     <main>
@@ -68,17 +68,19 @@
       <p>if you have any questions, feel free to write to me below.</p>
 
       <form id="email-form">
-        <input
-          type="email"
-          placeholder="your email"
-          id="sender-email"
-          required
-        />
-        <select id="subject-select" required>
-          <option value="bug">bug</option>
-          <option value="suggestion">suggestion</option>
-          <option value="other">other</option>
-        </select>
+        <div id="form-header">
+          <input
+            type="email"
+            placeholder="your email"
+            id="sender-email"
+            required
+          />
+          <select id="subject-select" required>
+            <option value="bug">bug</option>
+            <option value="suggestion">suggestion</option>
+            <option value="other">other</option>
+          </select>
+        </div>
         <textarea
           id="message-body"
           placeholder="your message"
@@ -101,45 +103,52 @@
   </body>
 
   <script type="module">
-    import { initFooter, initSidebarToggle } from "./lib.js";
+    import { initFooter, initSidebarToggle, onToggleSidebar } from "./lib.js";
 
-    function sendEmail() {
+    async function sendEmail() {
       const emailEl = document.querySelector("#sender-email");
-      // reset any prior invalid state
-      if (emailEl) {
-        emailEl.placeholder = "your email";
-      }
       const email = ((emailEl && emailEl.value) || "").trim();
 
-      // <https://emailregex.com/>
+      // <https://emailregex.com/> :P
       const emailPattern =
         /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
       if (!emailPattern.test(email)) {
-        // provide inline feedback by changing the input placeholder instead of an alert
         if (emailEl) {
           emailEl.value = "";
           emailEl.placeholder = "email must be valid!";
           emailEl.focus();
         }
-        return false;
       }
 
       const subject = document.getElementById("subject-select")?.value || "";
-      const body = encodeURIComponent(
-        document.getElementById("message-body")?.value || ""
-      );
-      const mailto = `mailto:antoni@example.com?subject=${encodeURIComponent(
-        subject
-      )}&body=${body}&from=${encodeURIComponent(email)}`;
-      window.location.href = mailto;
-      return true;
+      const body = document.getElementById("message-body")?.value || "";
+
+      try {
+        const res = await fetch("http://localhost:6969/notification", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, subject, body }),
+        });
+
+        if (!res.ok) {
+        } // disturb the user not......
+
+        const submitBtn = document.getElementById("submit-email");
+        if (submitBtn) {
+          submitBtn.textContent = "sent";
+          setTimeout(() => {
+            submitBtn.textContent = "send email";
+          }, 3000);
+        }
+        const msgEl = document.getElementById("message-body");
+        if (msgEl) msgEl.value = "";
+      } catch (err) {}
     }
 
-    // Wire the form submit to the helper
     const emailForm = document.getElementById("email-form");
     if (emailForm) {
-      emailForm.addEventListener("submit", function (event) {
+      emailForm.addEventListener("submit", (event) => {
         event.preventDefault();
         sendEmail();
       });
@@ -147,5 +156,6 @@
 
     window.footerDraggable = initFooter();
     window.sidebarDraggable = initSidebarToggle();
+    window.onToggleSidebar = onToggleSidebar;
   </script>
 </html>
