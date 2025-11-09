@@ -14,13 +14,13 @@
   <body>
     <nav>
       <div id="nav-title">
-        <h1>about me</h1>
         <div id="nav-links">
-          <a href="./index.html">home</a>
+          <a href="./index.html">charlee</a>
           <a href="./faq.html">about this</a>
+          <h1>about me</h1>
         </div>
       </div>
-      <footer>antoni chmiela 2025</footer>
+      <footer>antoni<br/>chmiela<br/>2025</footer>
     </nav>
     <main>
       <p>
@@ -139,7 +139,7 @@
   </body>
 
   <script type="module">
-    import { initFooter, initSidebarToggle } from "./lib.js";
+    import { initFooter, initSidebarToggle, onToggleSidebar } from "./lib.js";
 
     window.onToggleSidebar = onToggleSidebar;
     window.toggleDraggable = initSidebarToggle();

@@ -13,8 +13,8 @@
 
     <nav>
       <div id="nav-title">
-        <h1>charlee</h1>
         <div id="nav-links">
+          <h1>charlee</h1>
           <a href="./faq.html">about this</a>
           <a href="./about.html">about me</a>
         </div>
@@ -22,7 +22,7 @@
       <div id="userslug-container">
         you are:<br /><span id="userslug">...</span>!
       </div>
-      <footer>antoni chmiela 2025</footer>
+      <footer>antoni<br/>chmiela<br/>2025</footer>
     </nav>
 
     <main>
@@ -129,13 +129,13 @@
 
     // Handle oncoming connections
     peer.on("connection", (conn) => {
-      console.log("incoming connection from:", conn.peer);
+      console.log("charlee: inbound connection from:", conn.peer);
       if (!inboundConnection) {
         inboundConnection = conn;
-        console.log("accepted!");
+        console.log("charlee: accepted!");
 
         inboundConnection.on("data", (data) => {
-          console.log("Received:", data);
+          console.log("charlee: Received:", data);
           $messages.innerHTML += `
           <div class="message received">
             <div class="message-sender">${conn.peer}:</div>
@@ -147,7 +147,7 @@
         `;
         });
       } else {
-        console.log("rejected: inbound connection already exists");
+        console.log("charlee: rejected: inbound connection already exists");
       }
     });
 
@@ -160,7 +160,7 @@
       $connectionModal.style.display = "none";
       const conn = peer.connect(peerId);
 
-      console.log(`connecting to ${peerId}`);
+      console.log(`charlee: connecting to ${peerId}`);
 
       $messages.innerHTML += `
         <div class="message system">
@@ -180,7 +180,7 @@
 
       // We only do this once we connect
       conn.on("open", () => {
-        console.log("Connected to:", peerId);
+        console.log("charlee: Connected to:", peerId);
         clearTimeout(timeout);
         outboundConnection = conn;
 
@@ -205,7 +205,7 @@
       $messageInput.focus();
 
       if (outboundConnection && outboundConnection.open) {
-        console.log("sending message:", message);
+        console.log("charlee: sending message:", message);
         outboundConnection.send(message);
         $messages.innerHTML += `
           <div class="message sent">
@@ -217,7 +217,7 @@
           </div>
         `;
       } else {
-        console.log("no open connection to send message through.");
+        console.log("charlee: no open connection to send message through.");
       }
 
       document.activeElement.blur();
@@ -242,7 +242,7 @@
     });
 
     $messageInput.addEventListener("keydown", (e) => {
-      if (e.metaKey && e.key === "Enter") {
+      if (e.key === "Enter" && !e.shiftKey) {
         onSendMessage();
       }
     });
@@ -252,7 +252,7 @@
         copied = true;
         const slugText = $userslug.textContent;
         navigator.clipboard.writeText(slugText).then(() => {
-          console.log("Copied user slug to clipboard:", slugText);
+          console.log("charlee: Copied user slug to clipboard:", slugText);
           $userslug.textContent = "copied";
           setTimeout(() => {
             $userslug.textContent = slugText;
