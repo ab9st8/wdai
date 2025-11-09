@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./index.css" />
+    <title>charlee</title>
+  </head>
+  <body>
+    <noscript
+      ><div>this app is non-functional without javascript. :(</div></noscript
+    >
+
+    <nav>
+      <div id="nav-title">
+        <div id="nav-links">
+          <h1>charlee</h1>
+          <!-- target=_blank unusual here, but basically we wanna
+           discourage losing all messages and the connection, 
+           since we didn't implement persistence with localStorage.
+           :P -->
+          <a href="/faq.html" target="_blank">about this</a>
+          <a href="/about.html" target="_blank">about me</a>
+        </div>
+      </div>
+      <div id="userslug-container">
+        you are:<br /><span id="userslug">...</span>!
+      </div>
+      <footer>antoni<br />chmiela<br />2025</footer>
+    </nav>
+
+    <main>
+      <div id="messages-container"></div>
+
+      <div id="connection-modal">
+        <input
+          type="text"
+          id="peerid-input"
+          placeholder="enter peer ID to connect to..."
+        />
+        <button type="button" id="connect-button" onclick="onConnect()">
+          connect
+        </button>
+      </div>
+
+      <div id="message-input-container">
+        <textarea type="text" id="message-input" rows="1" disabled></textarea>
+        <button
+          type="button"
+          id="send-button"
+          onclick="onSendMessage()"
+          disabled
+        >
+          send
+        </button>
+      </div>
+    </main>
+    <div id="toggle-button-wrapper">
+      <span id="drag-handle">move</span>
+      <button
+        type="button"
+        id="toggle-sidebar-button"
+        onclick="onToggleSidebar(footerDraggable)"
+      >
+        close
+      </button>
+    </div>
+  </body>
+
+  <script type="module" src="/draggablesSetup.js"></script>
+  <script type="module" src="/index.js"></script>
+</html>

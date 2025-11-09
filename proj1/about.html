@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/index.css" />
+    <title>about me</title>
+  </head>
+  <style>
+    main {
+      padding-top: 30px;
+    }
+  </style>
+  <body>
+    <nav>
+      <div id="nav-title">
+        <div id="nav-links">
+          <a href="/index.html">charlee</a>
+          <a href="/faq.html">about this</a>
+          <h1>about me</h1>
+        </div>
+      </div>
+      <footer>antoni<br />chmiela<br />2025</footer>
+    </nav>
+    <main>
+      <p>
+        hi, I'm Antek Chmiela! I've been learning coding on and off for about 13
+        years now but only recently got "serious" about it. I study Computer
+        Science at the AGH University of Kraków and I'm a Junior Software
+        Engineer at
+        <a href="https://u2i.com" target="_blank">u2i</a>.
+      </p>
+
+      <p>
+        I really, really like music. I love both listening to music and
+        <a href="https://ab9st8.bandcamp.com/" target="_blank">making it</a>.
+        below are some of my favorite albums. if you click on any of the covers,
+        a new tab will open with a place where you can listen to it. I recommend
+        doing just that with a cover that looks interesting to you!
+      </p>
+
+      <div id="albums-container">
+        <a
+          href="https://celer.bandcamp.com/album/cantus-libres-remastered"
+          target="_blank"
+        >
+          <img
+            width="200"
+            height="200"
+            alt="Cantus Libres by Celer"
+            title="Cantus Libres by Celer"
+            src="https://f4.bcbits.com/img/a2639097275_16.jpg"
+          />
+        </a>
+
+        <a
+          href="https://timhecker.bandcamp.com/album/love-streams"
+          target="_blank"
+        >
+          <img
+            width="200"
+            height="200"
+            alt="Love Streams by Tim Hecker"
+            title="Love Streams by Tim Hecker"
+            src="https://f4.bcbits.com/img/a0399651042_16.jpg"
+          />
+        </a>
+
+        <a
+          href="https://www.youtube.com/playlist?list=OLAK5uy_nEJa0jLSIOGw1dLJSVnrFYn4wq4XaeJRQ"
+          target="_blank"
+        >
+          <img
+            width="200"
+            height="200"
+            alt="Clarity by Jimmy Eat World"
+            title="Clarity by Jimmy Eat World"
+            src="https://upload.wikimedia.org/wikipedia/en/a/ac/Clarity_%28Jimmy_Eat_World_album_-_cover_art%29.jpg"
+          />
+        </a>
+
+        <a
+          href="https://kylebobbydunn.bandcamp.com/album/infinite-sadness"
+          target="_blank"
+        >
+          <img
+            width="200"
+            height="200"
+            alt="Kyle Bobby Dunn and the Infinite Sadness by Kyle Bobby Dunn"
+            title="Kyle Bobby Dunn and the Infinite Sadness by Kyle Bobby Dunn"
+            src="https://f4.bcbits.com/img/a2079404868_10.jpg"
+          />
+        </a>
+
+        <a
+          href="https://www.youtube.com/playlist?list=OLAK5uy_nNSt2pxzqur9OlUok2h9mJDnHQ1YqFA-8"
+          target="_blank"
+        >
+          <img
+            width="200"
+            height="200"
+            alt="Aja by Steely Dan"
+            title="Aja by Steely Dan"
+            src="https://upload.wikimedia.org/wikipedia/en/4/49/Aja_album_cover.jpg"
+          />
+        </a>
+
+        <a href="https://www.youtube.com/watch?v=rv4wf7bzfFE" target="_blank">
+          <img
+            width="200"
+            height="200"
+            alt="Vulfpeck Live At Madison Square Garden"
+            title="Vulfpeck Live At Madison Square Garden"
+            src="https://f4.bcbits.com/img/a1218962898_16.jpg"
+          />
+        </a>
+      </div>
+
+      <p>and below, one of my own tracks:</p>
+      <video
+        title="Elixir & No Comparatee by ab9st8"
+        src="/assets/elixir.mp4"
+        width="90%"
+        height="auto"
+        type="video/mp4"
+        controls
+      ></video>
+    </main>
+    <div id="toggle-button-wrapper">
+      <span id="drag-handle">move</span>
+      <button
+        type="button"
+        id="toggle-sidebar-button"
+        onclick="onToggleSidebar(footerDraggable)"
+      >
+        close
+      </button>
+    </div>
+  </body>
+
+  <script type="module" src="/draggablesSetup.js"></script>
+</html>
