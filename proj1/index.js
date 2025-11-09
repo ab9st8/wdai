@@ -30,7 +30,6 @@ let outboundConnection = null;
 let inboundConnection = null;
 
 // "state" we need to track
-let sidebarOpen = true;
 let copied = false;
 
 // shared selectors and cached element references.

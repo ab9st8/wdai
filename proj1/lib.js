@@ -68,6 +68,8 @@ export function onToggleSidebar(footerDraggable) {
   const $sidebar = document.querySelector("nav");
   const $toggleSidebarButton = document.querySelector("#toggle-sidebar-button");
 
+  const sidebarOpen = $sidebar.style.display != "none";
+  
   if (sidebarOpen) {
     $sidebar.style.display = "none";
     $toggleSidebarButton.innerText = "open";
@@ -79,5 +81,4 @@ export function onToggleSidebar(footerDraggable) {
     );
   }
   document.activeElement.blur();
-  sidebarOpen = !sidebarOpen;
 }
