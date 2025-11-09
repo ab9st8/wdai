@@ -116,10 +116,6 @@ form {
   flex: 1;
 }
 
-#form-header input:autofill {
-  background-color: unset;
-}
-
 #form-header select {
   font-family: 'Libertinus Mono', monospace;
   width: min-content;
@@ -457,6 +453,7 @@ footer.visible {
     transparent 0,
     transparent 50%
   );
+  border-radius: 0px; /* a little rounded for no reason on safari, i think this fixes that */
   background-size: 15px 15px;
   background-color: #f8f8f8;
   animation: move 2s linear infinite;
