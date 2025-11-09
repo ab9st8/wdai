@@ -1,113 +1,103 @@
-const random = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+export const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 
-export const generateSlug = () => {
-    const randomAdjective = ADJECTIVES[random(0, ADJECTIVES.length - 1)];
-    const randomNoun = NOUNS[random(0, NOUNS.length - 1)];
-    return `${randomAdjective}-${randomNoun}`;
+let sidebarOpen = true;
+
+import { createDraggable, spring } from "https://esm.sh/animejs";
+
+function placeDraggable(draggable, storageKey, clamp) {
+  const position = localStorage.getItem(storageKey);
+
+  if (position !== null) {
+    const parsed = JSON.parse(position);
+
+    const clampedX = clamp.x(parsed.x);
+    const clampedY = clamp.y(parsed.y);
+
+    // We clamp for safety when changing viewports (completely unrealistic but just in case)
+    draggable.x = clampedX;
+    draggable.y = clampedY;
+  }
 }
 
-const ADJECTIVES = [
-  "abundant",
-  "average",
-  "bitter",
-  "breezy",
-  "candid",
-  "clumsy",
-  "diligent",
-  "dismal",
-  "eager",
-  "eerie",
-  "fragile",
-  "frantic",
-  "generic",
-  "grimy",
-  "heavy",
-  "hesitant",
-  "ignorant",
-  "impulsive",
-  "jaded",
-  "jaunty",
-  "keen",
-  "lackluster",
-  "lethargic",
-  "melancholy",
-  "mundane",
-  "neutral",
-  "nostalgic",
-  "obscure",
-  "obsolete",
-  "ordinary",
-  "perplexing",
-  "plausible",
-  "quirky",
-  "quizzical",
-  "rigid",
-  "rustic",
-  "skeptical",
-  "stoic",
-  "sympathetic",
-  "tedious",
-  "tense",
-  "unassuming",
-  "uncertain",
-  "vacant",
-  "vague",
-  "wary",
-  "weighty",
-  "yielding",
-  "zany",
-  "zealous",
-];
+export function initDraggable(
+  $target,
+  container,
+  storageKey,
+  clamp,
+  $trigger = $target
+) {
+  const draggable = createDraggable($target, {
+    container,
+    trigger: $trigger,
+    containerFriction: 0.6,
+    releaseEase: spring({
+      stiffness: 6000,
+      damping: 75,
+    }),
+    maxVelocity: 100,
+    onSettle: () => {
+      const newPosition = {
+        x: draggable.x,
+        y: draggable.y,
+      };
 
-const NOUNS = [
-  "apple",
-  "bicycle",
-  "bridge",
-  "carrot",
-  "cat",
-  "desk",
-  "dolphin",
-  "egg",
-  "elephant",
-  "flower",
-  "fox",
-  "garden",
-  "guitar",
-  "honey",
-  "house",
-  "island",
-  "jacket",
-  "jelly",
-  "key",
-  "kite",
-  "leaf",
-  "lemon",
-  "mountain",
-  "mushroom",
-  "notebook",
-  "notebook",
-  "oak",
-  "orange",
-  "panda",
-  "plant",
-  "popsicle",
-  "quilt",
-  "quokka",
-  "rainbow",
-  "river",
-  "sandwich",
-  "star",
-  "treasure",
-  "turtle",
-  "umbrella",
-  "umbrella",
-  "vase",
-  "violin",
-  "waterfall",
-  "window",
-  "xylophone",
-  "yarn",
-  "yogurt",
-  "zebra",
-  "zucchini",
-];
+      localStorage.setItem(storageKey, JSON.stringify(newPosition));
+    },
+  });
+
+  placeDraggable(draggable, storageKey, clamp);
+
+  requestAnimationFrame(() => {
+    $target.classList.add("visible");
+  });
+
+  return draggable;
+}
+
+export const initSidebarToggle = () =>
+  initDraggable(
+    document.querySelector("#toggle-button-wrapper"),
+    document.querySelector("main"),
+    "button-position",
+    {
+      x: (x) => x,
+      y: (y) => y,
+    },
+    document.querySelector("#drag-handle")
+  );
+
+export const initFooter = () =>
+  initDraggable(
+    document.querySelector("footer"),
+    document.querySelector("nav"),
+    "footer-position",
+    {
+      x: (x) => x,
+      y: (y) => y,
+    }
+  );
+
+export function onToggleSidebar(footerDraggable) {
+  const $sidebar = document.querySelector("nav");
+  const $toggleSidebarButton = document.querySelector("#toggle-sidebar-button");
+
+  if (sidebarOpen) {
+    $sidebar.style.display = "none";
+    $toggleSidebarButton.innerText = "open";
+  } else {
+    // Make sidebar visible first, then place the footer draggable after layout
+    // has settled. Using two requestAnimationFrame ticks ensures reflow has
+    // occurred so the draggable placement (which may depend on container
+    // geometry) will be correct.
+    $sidebar.style.display = "flex";
+    $toggleSidebarButton.innerText = "close";
+    requestAnimationFrame(() =>
+      placeDraggable(footerDraggable, "footer-position", {
+        x: (x) => x,
+        y: (y) => y,
+      })
+    );
+  }
+  document.activeElement.blur();
+  sidebarOpen = !sidebarOpen;
+}

@@ -7,33 +7,54 @@
   box-sizing: border-box;
 }
 
+*:focus {
+  outline: 1pt solid #c43535;
+  outline-offset: 1.5pt;
+}
+
 body {
   font-family: "Libertinus Mono", monospace;
   background-color: #f8f8f8;
   color: #111;
 
-  height: 100vh;
+  height: 100dvh;
 
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
-  font-size: 0.95em;
+  font-size: 0.95rem;
 }
 
 nav {
   flex: 1;
-
+  max-width: 250px;
   background-color: #c435350a;
-
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  justify-content: space-between;
-  gap: 10px;
   padding: 1rem;
-
   height: 100%;
+  border-right: #c43535 1pt solid;
+}
+
+#nav-title {
+  margin-bottom: auto;
+}
+
+noscript {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #c43535;
+  color: #f8f8f8;
+  text-align: center;
+  display: flex;
+  place-items: center;
+  z-index: 10000;
 }
 
 main {
@@ -41,46 +62,80 @@ main {
 
   height: 100%;
 
-  border-left: #c43535 1.0pt solid;
-
+  gap: 4rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
+  overflow-y: auto;
 }
 
 a {
-  color: transparent;
-  text-shadow: 1px 1px 0px #111;
+  color: #c43535;
   text-decoration: none;
 }
 
 a:hover,
 a:focus {
-  /* text-decoration: underline; */
-  color: #c43535;
+  text-decoration: underline;
 }
 
 a:focus {
-  outline: 1.0pt solid #c43535;
+  outline: 1pt solid #c43535;
   outline-offset: 1.5pt;
 }
 
-input, textarea {
+p {
+  width: 100%;
+  padding-left: 25%;
+  padding-right: 25%;
+  line-height: 1.3;
+}
+
+video {
+  width: max(50%, 300px);
+  margin: 30px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  margin: 30px;
+}
+
+form textarea {
+  width: 100%;
+}
+
+input {
   font-family: "Libertinus Mono", monospace;
+  position: relative;
+  font-size: 1em;
+  padding: 0.5em;
+  width: 400px;
+  border: 1pt solid #c43535;
+  border-radius: 0;
+  max-width: 70%;
+  height: 2rem;
+}
+
+textarea {
+  font-family: "Libertinus Mono", monospace;
+  position: relative;
   font-size: 1em;
   padding: 0.5em;
   margin: 0.5em;
   background-color: #f8f8f8;
-  border: 1.0pt solid #c43535;
-  background-color: #f8f8f8;
-  width: 400px;
+  border: 1pt solid #c43535;
   resize: none;
   max-width: 90vw;
 }
 
-input:focus, textarea:focus {
-  outline: 1.0pt solid #c43535;
+input:focus,
+textarea:focus {
+  outline: 1pt solid #c43535;
   outline-offset: 1.5pt;
 }
 
@@ -91,18 +146,39 @@ button {
   margin: 0.5em;
   background-color: #c43535;
   color: #f8f8f8;
-  border: 1.0pt solid #c43535;
+  border: 1pt solid #c43535;
   cursor: pointer;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 70px;
+  user-select: none;
 }
 
+
 button:hover {
-  background-color: #a32b2b;
-  border-color: #a32b2b;
+  background-color: #f8f8f8;
+  color: #c43535;
 }
 
 button:focus {
-  outline: 1.0pt solid #c43535;
+  outline: 1pt solid #c43535;
   outline-offset: 1.5pt;
+}
+
+#albums-container {
+  display: grid;
+  width: 70%;
+  margin-top: 3em;
+  gap: 3em;
+  row-gap: 70px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  place-items: center;
+}
+
+#albums-container a {
+  display: block;
 }
 
 #connection-modal {
@@ -112,9 +188,9 @@ button:focus {
   width: 100%;
   height: 100%;
   background-image: repeating-linear-gradient(
-    45deg,
+    315deg,
     #c43535 0,
-    #c43535 1.0pt,
+    #c43535 1pt,
     transparent 0,
     transparent 50%
   );
@@ -146,14 +222,18 @@ button:focus {
   bottom: 0;
   width: 100%;
   background-color: #c4353510;
-  border-top: #c43535 1.0pt solid;
+  border-top: #c43535 1pt solid;
 }
 
 #message-input {
+  position: relative;
   width: 100%;
 }
 
-
+#send-button {
+  position: relative;
+  z-index: 4;
+}
 
 #nav-title {
   display: flex;
@@ -166,6 +246,7 @@ button:focus {
   text-align: end;
   text-shadow: 1pt 1pt 0pt #c43535;
   line-height: 1em;
+  margin: 0;
 }
 
 #nav-links {
@@ -184,6 +265,7 @@ button:focus {
   color: #aaa;
   text-align: left;
   align-self: flex-start;
+  margin-bottom: 1rem;
 }
 
 #userslug {
@@ -196,12 +278,10 @@ button:focus {
 #messages-container {
   flex: 1;
   width: 100%;
-  /* padding: 1rem; */
   overflow-y: auto;
+  overflow-wrap: anywhere;
   display: flex;
   flex-direction: column;
-  /* align-items: stretch; */
-  /* gap: 0.5rem; */
 }
 
 .message {
@@ -210,6 +290,7 @@ button:focus {
   flex-direction: row;
   align-items: center;
   gap: 10px;
+  min-height: 2rem;
   padding: 0.5em;
 }
 
@@ -217,12 +298,13 @@ button:focus {
   justify-content: center;
   text-align: center;
   background-color: #c4353510;
-  border-bottom: #c43535 1.0pt solid;
+  border-bottom: #c43535 1pt solid;
 }
 
 .message-sender {
   color: #aaa;
   width: max-content;
+  align-self: flex-start;
 }
 
 .message.sent {
@@ -232,7 +314,6 @@ button:focus {
 
 .message-text {
   flex: 1;
-  word-break: break-all;
 }
 
 .message-text.received {
@@ -240,6 +321,134 @@ button:focus {
   background-color: #f8f8f8;
 }
 
+.message-text.system {
+  color: #c43535;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  right: -1px; /* i don't know why but with 0, it starts off that one pixel to the left lul. the red border gets doubled and it looks ugly */
+  background-color: #f8f8f8;
+  color: #c43535;
+  border: #c43535 solid 1pt;
+  padding: 2px 5px;
+  font-size: 0.8rem;
+  cursor: move;
+  user-select: none;
+  z-index: 1001;
+  display: none;
+  opacity: 0;
+  text-align: right;
+  margin: 0;
+}
+
+footer.visible {
+  display: block;
+  animation: showButton 0.3s step-start forwards;
+}
+
+#toggle-button-wrapper {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 50%;
+  left: 0px;
+  z-index: 1001;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  margin-top: -1rem;
+}
+
+#toggle-button-wrapper.visible {
+  animation: showButton 0.3s step-start forwards;
+}
+
+@keyframes showButton {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 0;
+  }
+  80% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+#toggle-sidebar-button {
+  margin: 0;
+  cursor: pointer;
+}
+
+#drag-handle {
+  font-size: 0.7rem;
+  cursor: move;
+  background-color: #f8f8f8;
+  color: #c43535;
+  border: #c43535 solid 1pt;
+  padding: 2pt 3pt;
+  opacity: 0;
+  user-select: none;
+  margin: 0;
+  margin-right: 3.2pt;
+}
+
+#toggle-button-wrapper:hover #drag-handle {
+  opacity: 1;
+}
+
+*:disabled {
+  cursor: not-allowed;
+  position: relative;
+}
+
+*:disabled::after {
+  width: 100%;
+  height: 100%;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: repeating-linear-gradient(
+    315deg,
+    #c43535 0,
+    #c43535 1pt,
+    transparent 0,
+    transparent 50%
+  );
+  background-size: 15px 15px;
+  background-color: #f8f8f8;
+  animation: move 2s linear infinite;
+  z-index: 2000;
+}
+
+textarea:disabled {
+  background-image: repeating-linear-gradient(
+    315deg,
+    #c43535 0,
+    #c43535 1pt,
+    transparent 0,
+    transparent 50%
+  );
+  background-size: 15px 15px;
+  background-color: #f8f8f8;
+  animation: move 2s linear infinite;
+}
 
 @keyframes blink {
   50% {
@@ -248,25 +457,28 @@ button:focus {
   }
 }
 
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 875px) {
   body {
     flex-direction: column;
     align-items: stretch;
   }
 
   nav {
-    align-items: center;
     justify-content: space-between;
     padding: 0.5em;
     flex: 0;
+    border-right: none;
+    border-bottom: #c43535 1pt solid;
+    max-width: unset;
   }
 
-  #nav-title {
-    align-items: center;
+  main {
+    height: unset;
   }
 
-  #nav-title h1 {
-    text-align: center;
+  p {
+    padding-left: 15%;
+    padding-right: 15%;
   }
 
   #nav-links {
@@ -280,8 +492,27 @@ button:focus {
     display: inline;
   }
 
+  #toggle-button-wrapper {
+    top: 0;
+    left: 50%;
+    transform: none;
+  }
+
+  .drag-handle {
+    opacity: 1;
+    margin-bottom: 3px;
+  }
+
+  footer {
+    margin-right: 0;
+    margin-bottom: -1px;
+  }
+
+  #userslug-container {
+    margin-bottom: 0;
+  }
+
   main {
     border-left: none;
-    border-top: #c43535 1.0pt solid;
   }
 }

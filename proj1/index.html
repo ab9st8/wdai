@@ -7,7 +7,9 @@
     <title>charlee</title>
   </head>
   <body>
-    <noscript>this app is non-functional without javascript. :(</noscript>
+    <noscript
+      ><div>this app is non-functional without javascript. :(</div></noscript
+    >
 
     <nav>
       <div id="nav-title">
@@ -17,23 +19,10 @@
           <a href="./about.html">about me</a>
         </div>
       </div>
-      <div>
-        <div id="userslug-container">
-          you are:<br /><span id="userslug">...</span>!
-        </div>
-        <footer
-          style="
-            position: absolute;
-            bottom: 5pt;
-            width: 100%;
-            text-align: center;
-            font-size: 0.8em;
-            z-index: 1000;
-          "
-        >
-          <p>Antoni Chmiela, 2025</p>
-        </footer>
+      <div id="userslug-container">
+        you are:<br /><span id="userslug">...</span>!
       </div>
+      <footer>antoni chmiela 2025</footer>
     </nav>
 
     <main>
@@ -51,36 +40,103 @@
       </div>
 
       <div id="message-input-container">
-        <textarea
-          type="text"
-          id="message-input"
-          rows="1"
-          placeholder="type your message here..."
-        ></textarea>
-        <button type="button" id="send-button" onclick="onSendMessage()">
+        <textarea type="text" id="message-input" rows="1" disabled></textarea>
+        <button
+          type="button"
+          id="send-button"
+          onclick="onSendMessage()"
+          disabled
+        >
           send
         </button>
       </div>
     </main>
+    <div id="toggle-button-wrapper">
+      <span id="drag-handle">move</span>
+      <button
+        type="button"
+        id="toggle-sidebar-button"
+        onclick="onToggleSidebar(footerDraggable)"
+      >
+        close
+      </button>
+    </div>
   </body>
 
   <script type="module">
-    import { generateSlug } from "./lib.js";
+    import { generateSlug } from "./slugGenerator.js";
+    import { initFooter, initSidebarToggle, onToggleSidebar } from "./lib.js";
     import { Peer } from "https://esm.sh/peerjs@1.5.5?bundle-deps";
 
-    // Set up new peer for this tab
     const slug = generateSlug();
-    const peer = new Peer(slug);
-    document.getElementById("userslug").textContent = peer.id;
 
-    let connection = null;
+    let peer = null;
+
+    // see if we're running the server locally.
+    // if so, let's use it!
+    await fetch("http://localhost:9000/myapp")
+      .then(
+        async (response) =>
+          (peer = (await response.ok)
+            ? (peer = new Peer(slug, {
+                host: "localhost",
+                port: 9000,
+                path: "/myapp",
+                debug: 3,
+              }))
+            : new Peer(slug, { debug: 3 }))
+      )
+      .catch((_) => (peer = new Peer(slug)));
+
+    window.peer = peer;
+
+    let sidebarOpen = true;
+    let copied = false;
+
+    // Shared selectors and cached element references
+    const SELECTORS = {
+      main: "main",
+      nav: "nav",
+      userslug: "#userslug",
+      messagesContainer: "#messages-container",
+      peeridInput: "#peerid-input",
+      connectionModal: "#connection-modal",
+      messageInput: "#message-input",
+      sendButton: "#send-button",
+      connectingMessage: "#connecting-message",
+      toggleSidebarButton: "#toggle-sidebar-button",
+      toggleButtonWrapper: "#toggle-button-wrapper",
+      dragHandle: "#drag-handle",
+    };
+
+    const $userslug = document.querySelector(SELECTORS.userslug);
+    const $messages = document.querySelector(SELECTORS.messagesContainer);
+    const $peeridInput = document.querySelector(SELECTORS.peeridInput);
+    const $connectionModal = document.querySelector(SELECTORS.connectionModal);
+    const $messageInput = document.querySelector(SELECTORS.messageInput);
+    const $sendButton = document.querySelector(SELECTORS.sendButton);
+    const $toggleSidebarButton = document.querySelector(
+      SELECTORS.toggleSidebarButton
+    );
+    const $toggleButtonWrapper = document.querySelector(
+      SELECTORS.toggleButtonWrapper
+    );
+
+    let outboundConnection = null;
+    let inboundConnection = null;
+
+    $userslug.textContent = peer.id;
 
     // Handle oncoming connections
     peer.on("connection", (conn) => {
-      console.log("Incoming connection from:", conn.peer);
-      conn.on("data", (data) => {
-        console.log("Received:", data);
-        document.getElementById("messages-container").innerHTML += `
+      console.log("incoming connection from:", conn.peer);
+      if (!inboundConnection) {
+        inboundConnection = conn;
+        console.log("accepted!");
+
+        inboundConnection.on("data", (data) => {
+          console.log("Received:", data);
+          $messages.innerHTML += `
           <div class="message received">
             <div class="message-sender">${conn.peer}:</div>
             <div class="message-text received">${data.replaceAll(
@@ -89,36 +145,69 @@
             )}</div>
           </div>
         `;
-      });
+        });
+      } else {
+        console.log("rejected: inbound connection already exists");
+      }
     });
 
     function onConnect() {
-      const modal = document.getElementById("connection-modal");
-      modal.style.display = "none";
-      const peerId = document.getElementById("peerid-input").value;
+      const peerId = $peeridInput.value.trim();
+      if (peerId.length == 0) {
+        $peeridInput.placeholder = "peer id cannot be empty!";
+        return;
+      }
+      $connectionModal.style.display = "none";
       const conn = peer.connect(peerId);
 
+      console.log(`connecting to ${peerId}`);
+
+      $messages.innerHTML += `
+        <div class="message system">
+          <span class="message-text system" id="connecting-message">connecting...</span>
+        </div>
+      `;
+
+      const timeout = setTimeout(() => {
+        if (!outboundConnection) {
+          $messages.innerHTML += `
+            <div class="message system">
+              <span class="message-text system">could not connect in 5 seconds. the peer probably does not exist. try refreshing</span>
+            </div>
+          `;
+        }
+      }, 5000);
+
+      // We only do this once we connect
       conn.on("open", () => {
         console.log("Connected to:", peerId);
-        connection = conn;
-        document.getElementById("messages-container").innerHTML += `
-          <div class="message system">
-            <span class="message-text system">talking with ${peerId}!</span>
-          </div>
-        `;
+        clearTimeout(timeout);
+        outboundConnection = conn;
+
+        const $connectingMsg = document.querySelector(
+          SELECTORS.connectingMessage
+        );
+        if ($connectingMsg)
+          $connectingMsg.innerText = `talking with ${peerId}!`;
+
+        $messageInput.disabled = false;
+        $messageInput.placeholder = "type your message here...";
+        $sendButton.disabled = false;
       });
+
+      conn.on("error", (e) => console.error(e));
     }
 
     function onSendMessage() {
-      const messageTextarea = document.getElementById("message-input");
-      const message = messageTextarea.value;
-      messageTextarea.value = "";
+      const message = $messageInput.value;
+      $messageInput.value = "";
 
-      console.log("sending message:", message);
+      $messageInput.focus();
 
-      if (connection && connection.open) {
-        connection.send(message);
-        document.getElementById("messages-container").innerHTML += `
+      if (outboundConnection && outboundConnection.open) {
+        console.log("sending message:", message);
+        outboundConnection.send(message);
+        $messages.innerHTML += `
           <div class="message sent">
             <div class="message-sender">${peer.id}:</div>
             <div class="message-text sent">${message.replaceAll(
@@ -130,11 +219,15 @@
       } else {
         console.log("no open connection to send message through.");
       }
+
+      document.activeElement.blur();
     }
 
-    // TODO: move this to a separate module
     window.onConnect = onConnect;
     window.onSendMessage = onSendMessage;
+    window.onToggleSidebar = onToggleSidebar;
+    window.toggleDraggable = initSidebarToggle();
+    window.footerDraggable = initFooter();
 
     window.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
@@ -142,29 +235,31 @@
       }
     });
 
-    document.getElementById("peerid-input").addEventListener("keydown", (e) => {
+    $peeridInput.addEventListener("keydown", (e) => {
       if (e.metaKey && e.key === "Enter") {
         onConnect();
       }
     });
 
-    document
-      .getElementById("message-input")
-      .addEventListener("keydown", (e) => {
-        if (e.metaKey && e.key === "Enter") {
-          onSendMessage();
-        }
-      });
+    $messageInput.addEventListener("keydown", (e) => {
+      if (e.metaKey && e.key === "Enter") {
+        onSendMessage();
+      }
+    });
 
-    document.getElementById("userslug").addEventListener("click", () => {
-      const slugText = document.getElementById("userslug").textContent;
-      navigator.clipboard.writeText(slugText).then(() => {
-        console.log("Copied user slug to clipboard:", slugText);
-        document.getElementById("userslug").textContent = "copied";
-        setTimeout(() => {
-          document.getElementById("userslug").textContent = slugText;
-        }, 1000);
-      });
+    $userslug.addEventListener("click", () => {
+      if (!copied) {
+        copied = true;
+        const slugText = $userslug.textContent;
+        navigator.clipboard.writeText(slugText).then(() => {
+          console.log("Copied user slug to clipboard:", slugText);
+          $userslug.textContent = "copied";
+          setTimeout(() => {
+            $userslug.textContent = slugText;
+            copied = false;
+          }, 1000);
+        });
+      }
     });
 
     window.addEventListener("beforeunload", () => {
