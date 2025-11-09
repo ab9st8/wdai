@@ -102,8 +102,9 @@
     </div>
   </body>
 
+  <script type="module" src="/draggablesSetup.js"></script>
   <script type="module">
-    import { initFooter, initSidebarToggle, onToggleSidebar } from "./lib.js";
+    import { onToggleSidebar } from "./lib.js";
 
     async function sendEmail() {
       const emailEl = document.querySelector("#sender-email");
@@ -124,13 +125,16 @@
       const subject = document.getElementById("subject-select")?.value || "";
       const body = document.getElementById("message-body")?.value || "";
 
+      let res;
+      
       try {
-        const res = await fetch("http://localhost:6969/notification", {
+        res = await fetch("http://localhost:6969/notification", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, subject, body }),
         });
-
+      } catch (err) {
+      } finally {
         if (!res.ok) {
         } // disturb the user not......
 
@@ -143,7 +147,7 @@
         }
         const msgEl = document.getElementById("message-body");
         if (msgEl) msgEl.value = "";
-      } catch (err) {}
+      }
     }
 
     const emailForm = document.getElementById("email-form");
@@ -154,8 +158,6 @@
       });
     }
 
-    window.footerDraggable = initFooter();
-    window.sidebarDraggable = initSidebarToggle();
     window.onToggleSidebar = onToggleSidebar;
   </script>
 </html>

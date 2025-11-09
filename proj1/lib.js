@@ -1,18 +1,13 @@
-export const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
-
-let sidebarOpen = true;
-
 import { createDraggable, spring } from "https://esm.sh/animejs";
 
-function placeDraggable(draggable, storageKey, clamp) {
+function placeDraggable(draggable, storageKey) {
   const position = localStorage.getItem(storageKey);
 
   if (position !== null) {
     const parsed = JSON.parse(position);
 
-    // We clamp for safety when changing viewports (completely unrealistic but just in case)
-    draggable.x = clamp.x(parsed.x);
-    draggable.y = clamp.y(parsed.y);
+    draggable.x = parsed.x;
+    draggable.y = parsed.y;
   }
 }
 
@@ -20,7 +15,6 @@ export function initDraggable(
   $target,
   container,
   storageKey,
-  clamp,
   $trigger = $target
 ) {
   const draggable = createDraggable($target, {
@@ -46,7 +40,7 @@ export function initDraggable(
     },
   });
 
-  placeDraggable(draggable, storageKey, clamp);
+  placeDraggable(draggable, storageKey);
 
   requestAnimationFrame(() => {
     $target.classList.add("visible");
@@ -55,15 +49,17 @@ export function initDraggable(
   return draggable;
 }
 
+const NAV_WIDTH = document.querySelector("nav").offsetWidth;
+const NAV_HEIGHT = document.querySelector("nav").offsetHeight;
+
+const MAIN_WIDTH = document.querySelector("main").offsetWidth;
+const MAIN_HEIGHT = document.querySelector("main").offsetHeight;
+  
 export const initSidebarToggle = () =>
   initDraggable(
     document.querySelector("#toggle-button-wrapper"),
     document.querySelector("main"),
     "button-position",
-    {
-      x: (x) => x,
-      y: (y) => y,
-    },
     document.querySelector("#drag-handle")
   );
 
@@ -72,10 +68,6 @@ export const initFooter = () =>
     document.querySelector("footer"),
     document.querySelector("nav"),
     "footer-position",
-    {
-      x: (x) => x,
-      y: (y) => y,
-    }
   );
 
 export function onToggleSidebar(footerDraggable) {
@@ -86,17 +78,10 @@ export function onToggleSidebar(footerDraggable) {
     $sidebar.style.display = "none";
     $toggleSidebarButton.innerText = "open";
   } else {
-    // Make sidebar visible first, then place the footer draggable after layout
-    // has settled. Using two requestAnimationFrame ticks ensures reflow has
-    // occurred so the draggable placement (which may depend on container
-    // geometry) will be correct.
     $sidebar.style.display = "flex";
     $toggleSidebarButton.innerText = "close";
     requestAnimationFrame(() =>
-      placeDraggable(footerDraggable, "footer-position", {
-        x: (x) => x,
-        y: (y) => y,
-      })
+      placeDraggable(footerDraggable, "footer-position")
     );
   }
   document.activeElement.blur();

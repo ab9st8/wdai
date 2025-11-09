@@ -1,5 +1,5 @@
 import { generateSlug } from "./slugGenerator.js";
-import { initFooter, initSidebarToggle, onToggleSidebar } from "./lib.js";
+import { onToggleSidebar } from "./lib.js";
 import { Peer } from "https://esm.sh/peerjs@1.5.5?bundle-deps";
 
 const slug = generateSlug();
@@ -165,8 +165,6 @@ function onSendMessage() {
 window.onConnect = onConnect;
 window.onSendMessage = onSendMessage;
 window.onToggleSidebar = onToggleSidebar;
-window.toggleDraggable = initSidebarToggle();
-window.footerDraggable = initFooter();
 
 // set up event listeners.
 // also wanted to clean this up but whatever.
