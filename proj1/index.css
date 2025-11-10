@@ -317,7 +317,6 @@ button:focus {
 }
 
 .message {
-  flex: 1;
   width: 100%;
   display: inline-flex;
   flex-direction: row;
