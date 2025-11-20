@@ -396,6 +396,10 @@ footer.visible {
   margin-top: -1rem;
 }
 
+#toggle-button-wrapper, #toggle-button-wrapper * {
+  touch-action: none;
+}
+
 #toggle-button-wrapper.visible {
   animation: showButton 0.3s step-start forwards;
 }
