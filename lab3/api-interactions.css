@@ -1,0 +1,28 @@
+table {
+  border-collapse: collapse;
+  border: 1pt solid black;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+tr th,
+tr td {
+  border: 1pt solid black;
+  padding: 7px;
+}
+
+tr th {
+    text-align: left;
+}
+
+td.name {
+    text-align: center;
+    font-weight: bold;
+}
+
+td#loading {
+    text-align: center;
+    font-weight: normal;
+    font-style: italic;
+}

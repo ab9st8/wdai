@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="api-interactions.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,700;1,800;1,900&family=Alegreya:ital,wght@0,400..900;1,400..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>Interakcje z API · WDAI 2025/2026</title>
+  </head>
+
+  <body>
+    <header><h1>Interakcje z API</h1></header>
+
+    <main>
+      <input type="text" id="search-input" placeholder="Szukaj..." />
+      <table>
+        <thead>
+          <tr>
+            <th>Nazwa</th>
+            <th>Opis</th>
+            <th>Zdjęcie</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="loading" colspan="3">Ładuję...</td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
+  </body>
+
+  <script type="text/javascript">
+    let data = null;
+    const imagesCache = new Map();
+
+    const addInputListener = (data) => {
+      document.getElementById("search-input").addEventListener("input", function (event) {
+        const query = event.target.value.toLowerCase();
+        const filteredProducts = data.products.filter((product) =>
+          product.title.toLowerCase().includes(query)
+        );
+        const filteredData = { products: filteredProducts };
+        populateTable(filteredData);
+      });
+    };
+
+    function populateTable(data) {
+      const table = document.querySelector("table");
+      const tbody = table.querySelector("tbody");
+      const loadingRow = document.getElementById("loading");
+      if (loadingRow) {
+        loadingRow.remove();
+      }
+
+      const rows = data.products.map((product) => {
+        const row = document.createElement("tr");
+
+        const nameCell = document.createElement("td");
+        nameCell.textContent = product.title;
+        row.appendChild(nameCell);
+
+        const descCell = document.createElement("td");
+        descCell.textContent = product.description;
+        descCell.classList.add("description");
+        row.appendChild(descCell);
+
+        const imgCell = document.createElement("td");
+        const cached = imagesCache.get(product.thumbnail);
+        let img;
+        if (cached) {
+          img = cached;
+        } else {
+          img = document.createElement("img");
+          img.src = product.thumbnail;
+          img.alt = product.title;
+        }
+        img.width = 100;
+        imgCell.appendChild(img);
+        row.appendChild(imgCell);
+
+        return row;
+      });
+
+      tbody.replaceChildren(...rows);
+    }
+
+    function preloadImages(products) {
+      return Promise.all(
+        products.map((product) => {
+          return new Promise((resolve) => {
+            const img = new Image();
+            img.onload = () => resolve();
+            img.onerror = () => {
+              console.log("Error loading image:", product.thumbnail);
+              resolve();
+            }
+            img.src = product.thumbnail;
+            img.alt = product.title;
+            imagesCache.set(product.thumbnail, img);
+          });
+        })
+      );
+    }
+
+    fetch("https://dummyjson.com/products?limit=30")
+      .then((response) => response.json())
+      .then(async (json) => {
+        data = json;
+        console.log("Dane załadowane:", data);
+
+        await preloadImages(data.products);
+        populateTable(data);
+        addInputListener(data);
+      })
+      .catch((error) => {
+        console.error("Błąd podczas pobierania danych:", error);
+      });
+  </script>
+</html>
