@@ -26,3 +26,10 @@ td#loading {
     font-weight: normal;
     font-style: italic;
 }
+
+#controls {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    margin-bottom: 15px;
+}
