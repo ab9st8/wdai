@@ -17,12 +17,15 @@
   </head>
 
   <body>
-    <div id="stopwatch-container">
-      <button id="start">Start</button>
-      <button id="stop">Stop</button>
-      <button id="reset">Reset</button>
-      <div id="display"></div>
-    </div>
+    <header><h1>Stoper</h1></header>
+    <main>
+      <div id="stopwatch-container">
+        <button id="start">Start</button>
+        <button id="stop">Stop</button>
+        <button id="reset">Reset</button>
+        <div id="display"></div>
+      </div>
+    </main>
   </body>
 
   <script type="text/javascript">
@@ -50,7 +53,7 @@
 
     function updateDisplay() {
       const now = Date.now();
-      const currentMs = startTime ? (elapsed + (now - startTime)) : elapsed;
+      const currentMs = startTime ? elapsed + (now - startTime) : elapsed;
       display.innerHTML = formatTimeMs(currentMs);
     }
 
