@@ -1,0 +1,20 @@
+html, body {
+	height: 100%;
+	margin: 0;
+}
+
+#canvas-container {
+	display: flex;
+	justify-content: center; 
+	align-items: flex-start; 
+	padding: 12px 0; 
+}
+
+#canvas-container canvas {
+	display: block;
+	
+	max-height: calc(100vh - 24px);
+	width: auto;
+	height: auto;
+}
+
