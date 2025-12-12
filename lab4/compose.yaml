@@ -1,8 +1,8 @@
 services:
   books:
     build:
-      context: ./books/
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./books/Dockerfile
     restart: always
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/wdai
@@ -13,8 +13,8 @@ services:
 
   orders:
     build:
-      context: ./orders/
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./orders/Dockerfile
     restart: always
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/wdai
@@ -25,8 +25,8 @@ services:
 
   users:
     build:
-      context: ./users/
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./users/Dockerfile
     restart: always
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/wdai
