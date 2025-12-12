@@ -9,6 +9,9 @@ async def ping():
 
 
 if __name__ == "__main__":
+	import os
 	import uvicorn
-	uvicorn.run(app, host="0.0.0.0", port=2137, reload=True)
+
+	port = int(os.environ.get("PORT", "2137"))
+	uvicorn.run(app, host="0.0.0.0", port=port, reload=True)
 
