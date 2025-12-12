@@ -5,10 +5,9 @@ services:
       dockerfile: Dockerfile
     restart: always
     environment:
-      - PORT=2137
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/wdai
     ports:
-      - "2137:2137"
+      - "2137:3000"
     depends_on:
       - db
 
@@ -18,10 +17,9 @@ services:
       dockerfile: Dockerfile
     restart: always
     environment:
-      - PORT=1337
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/wdai
     ports:
-      - "1337:1337"
+      - "1337:3000"
     depends_on:
       - db
 
@@ -31,10 +29,9 @@ services:
       dockerfile: Dockerfile
     restart: always
     environment:
-      - PORT=6969
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/wdai
     ports:
-      - "6969:6969"
+      - "6969:3000"
     depends_on:
       - db
 

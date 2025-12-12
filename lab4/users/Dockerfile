@@ -19,7 +19,5 @@ RUN uv sync
 
 COPY . /app
 
-EXPOSE 6969
-
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 CMD ["uv", "run", "python", "-m", "src.main"]
