@@ -7,5 +7,9 @@ dependencies = [
 	"fastapi",
 	"requests",
 	"pyjwt",
+<<<<<<< HEAD
+=======
+	"uvicorn",
+>>>>>>> 7d7988b (add uvicorn and init devservers per service)
 ]
 
