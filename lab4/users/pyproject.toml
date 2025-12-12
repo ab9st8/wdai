@@ -2,12 +2,12 @@
 name = "users"
 version = "0.1.0"
 description = "Users service"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 dependencies = [
-	"fastapi",
-	"requests",
-	"pyjwt",
-	"uvicorn",
-	"pyargon2>=1.1.2",
+    "fastapi==0.124.4",
+    "requests==2.32.5",
+    "pyjwt==2.10.1",
+    "uvicorn==0.38.0",
+    "pyargon2>=1.1.2",
 ]
 

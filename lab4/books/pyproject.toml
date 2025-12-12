@@ -2,14 +2,11 @@
 name = "books"
 version = "0.1.0"
 description = "Books service"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 dependencies = [
-	"fastapi",
-	"requests",
-	"pyjwt",
-<<<<<<< HEAD
-=======
-	"uvicorn",
->>>>>>> 7d7988b (add uvicorn and init devservers per service)
+    "fastapi==0.124.4",
+    "requests==2.32.5",
+    "pyjwt==2.10.1",
+    "uvicorn==0.38.0",
 ]
 
