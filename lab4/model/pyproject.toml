@@ -1,0 +1,9 @@
+[project]
+name = "model"
+version = "0.1.0"
+description = "Common ORM model definitions"
+requires-python = ">=3.9"
+dependencies = [
+    "sqlalchemy==2.0.45",
+]
+
