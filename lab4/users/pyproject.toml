@@ -7,5 +7,6 @@ dependencies = [
 	"fastapi",
 	"requests",
 	"pyjwt",
+	"pyargon2>=1.1.2",
 ]
 
