@@ -5,7 +5,7 @@ services:
       dockerfile: ./books/Dockerfile
     restart: always
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/wdai
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/lab4
     ports:
       - 2137:3000
     depends_on:
@@ -20,7 +20,7 @@ services:
       dockerfile: ./orders/Dockerfile
     restart: always
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/wdai
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/lab4
     ports:
       - 1337:3000
     depends_on:
@@ -35,7 +35,7 @@ services:
       dockerfile: ./users/Dockerfile
     restart: always
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/wdai
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/lab4
     ports:
       - 6969:3000
     depends_on:
