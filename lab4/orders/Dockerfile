@@ -16,9 +16,8 @@ ENV UV_PROJECT_ENVIRONMENT=/usr/local
 
 RUN pip install --upgrade pip setuptools wheel uv
 
-RUN pip install /model
-
 RUN uv sync
+RUN pip install -e /model
 
 COPY . /app
 

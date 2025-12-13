@@ -16,11 +16,8 @@ ENV UV_PROJECT_ENVIRONMENT=/usr/local
 
 RUN pip install --upgrade pip setuptools wheel uv
 
-RUN pip install /model
-
 RUN uv sync
-
-COPY . /app
+RUN pip install -e /model
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 CMD ["uv", "run", "python", "-m", "src.main"]
