@@ -7,9 +7,12 @@ services:
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/wdai
     ports:
-      - "2137:3000"
+      - 2137:3000
     depends_on:
       - db
+    volumes:
+      - ./books/:/app/
+      - ./model/:/model/
 
   orders:
     build:
@@ -19,9 +22,12 @@ services:
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/wdai
     ports:
-      - "1337:3000"
+      - 1337:3000
     depends_on:
       - db
+    volumes:
+      - ./books/:/app/
+      - ./model/:/model/
 
   users:
     build:
@@ -31,9 +37,12 @@ services:
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/wdai
     ports:
-      - "6969:3000"
+      - 6969:3000
     depends_on:
       - db
+    volumes:
+      - ./books/:/app/
+      - ./model/:/model/
 
   db:
     image: postgres:17.2-alpine
@@ -46,8 +55,7 @@ services:
       - db-data:/var/lib/postgresql/data
       - ./db/ddl.sql:/docker-entrypoint-initdb.d/init.sql:ro
     ports:
-      - "5432:5432"
-
+      - 5432:5432
   
 volumes:
   db-data: {}
