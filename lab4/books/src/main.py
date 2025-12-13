@@ -1,12 +1,8 @@
 from fastapi import FastAPI
+from src.api import router
 
 app = FastAPI()
-
-
-@app.get("/ping")
-async def ping():
-	return {"ping": "pong", "from": "books"}
-
+app.include_router(router)
 
 if __name__ == "__main__":
 	import uvicorn
