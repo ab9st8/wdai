@@ -1,5 +1,7 @@
 -- PostgreSQL DDLs for the shared database
 
+-- we should probably write constraints for these but whatever. we do that in pydantic
+
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     username TEXT NOT NULL UNIQUE,
@@ -22,3 +24,15 @@ CREATE TABLE IF NOT EXISTS orders (
     quantity INT DEFAULT 1,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT now()
 );
+
+INSERT INTO books (title, author, published_year) VALUES
+('House of Leaves', 'Mark Z. Danielewski', 2000),
+('Infinite Jest', 'David Foster Wallace', 1996),
+('Gravity''s Rainbow', 'Thomas Pynchon', 1973),
+('East of Eden', 'John Steinbeck', 1952);
+
+INSERT INTO users (username, email) VALUES
+('alice', 'ally42@mail.com'),
+('bob', 'robert.smith@mail.com'),
+('lee', 'lee@mail.com'),
+('mallory', 'xmalloryx@acme.com');
