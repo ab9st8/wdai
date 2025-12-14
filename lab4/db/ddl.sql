@@ -4,8 +4,8 @@
 
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
-    username TEXT NOT NULL UNIQUE,
-    email TEXT,
+    email TEXT NOT NULL UNIQUE,
+    password_hash TEXT NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT now()
 );
 
@@ -31,8 +31,8 @@ INSERT INTO books (title, author, published_year) VALUES
 ('Gravity''s Rainbow', 'Thomas Pynchon', 1973),
 ('East of Eden', 'John Steinbeck', 1952);
 
-INSERT INTO users (username, email) VALUES
-('alice', 'ally42@mail.com'),
-('bob', 'robert.smith@mail.com'),
-('lee', 'lee@mail.com'),
-('mallory', 'xmalloryx@acme.com');
+INSERT INTO users (email, password_hash) VALUES
+('ally42@mail.com', 'hashed_password_1'),
+('robert.smith@mail.com', 'hashed_password_2'),
+('lee@mail.com', 'hashed_password_3'),
+('xmalloryx@acme.com', 'hashed_password_4');
