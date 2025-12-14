@@ -1,21 +1,16 @@
+from datetime import timedelta
 from pydantic import ValidationError
+from commons.auth.token import ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token, get_password_hash, verify_password
 from fastapi import Depends, Request, APIRouter, HTTPException, status
 from fastapi.responses import JSONResponse
-from commons.base import db_session
-from commons.domain.user import UserDTO
+from commons.model.base import db_session
+from commons.model.domain.user import UserDTO
 from sqlalchemy.sql import select, exists
-from commons.orm.user import User
+from commons.model.orm.user import User
 from pwdlib import PasswordHash
+import jwt
 
 router = APIRouter(prefix="/api")
-
-SECRET_KEY = "c2aa543d02fc85502908a67b8664b7a09d74ba2593aa797bc9cf060aa908c45c"
-
-passwordhash = PasswordHash.recommended()
-
-
-def _hash_password(password: str) -> str:
-
 
 @router.get("/users")
 async def get_users(db_session=Depends(db_session)):
@@ -49,7 +44,7 @@ async def post_users(request: Request, db_session=Depends(db_session)):
 
     new_user = User(
         email=user.email,
-        password_hash=_hash_password(
+        password_hash=get_password_hash(
             user.password
         ),  # i'm pretty sure ideally we would hash on the client side cause can't the password be intercepted in transit otherwise?
     )
@@ -78,21 +73,17 @@ async def login_user(request: Request, db_session=Depends(db_session)):
 
     if not user_orm:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials", headers={"WWW-Authenticate": "Bearer"}
         )
 
-    try:
-        if _hash_password(user.password) != user_orm.password_hash:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials"
-            )
-    except Exception:
+    if not verify_password(user.password, user_orm.password_hash):
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials", headers={"WWW-Authenticate": "Bearer"}
         )
 
-    import jwt
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": user_orm.email}, expires_delta=access_token_expires
+    )
 
-    token = jwt.encode({"user_id": user_orm.id}, SECRET_KEY, algorithm="HS256")
-
-    return {"token": token}
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"access_token": access_token, "token_type": "bearer"})
