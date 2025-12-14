@@ -7,9 +7,10 @@ from sqlalchemy.sql import select, exists
 from commons.model.orm.order import Order
 from commons.model.domain.order import OrderDTO
 from commons.model.base import db_session
+from commons.auth import get_current_user_email
 
 
-router = APIRouter(prefix="/api")
+router = APIRouter(prefix="/api", dependencies=[Depends(get_current_user_email)])
 
 
 @router.get("/orders/{user_id}", summary="Zwraca listę zamówień użytkownika")

@@ -4,8 +4,9 @@ from sqlalchemy.sql import select, exists
 from commons.model.domain.book import BookDTO
 from commons.model.orm.book import Book
 from commons.model.base.base import db_session
+from commons.auth import get_current_user_email
 
-router = APIRouter(prefix="/api")
+router = APIRouter(prefix="/api", dependencies=[Depends(get_current_user_email)])
 
 @router.get("/books", summary="Zwraca listę wszystkich książek")
 async def get_books(db_session=Depends(db_session)):

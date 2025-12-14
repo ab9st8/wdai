@@ -1,25 +1,24 @@
 from datetime import timedelta
 from pydantic import ValidationError
-from commons.auth.token import ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token, get_password_hash, verify_password
+from commons.auth import ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token, get_password_hash, verify_password
 from fastapi import Depends, Request, APIRouter, HTTPException, status
 from fastapi.responses import JSONResponse
 from commons.model.base import db_session
 from commons.model.domain.user import UserDTO
 from commons.model.orm.user import User
-from .auth import get_current_user_email
+from commons.auth import get_current_user_email
 from sqlalchemy.sql import select, exists
-from pwdlib import PasswordHash
-import jwt
 
-router = APIRouter(prefix="/api", dependencies=[Depends(get_current_user_email)])
+protected_router = APIRouter(prefix="/api", dependencies=[Depends(get_current_user_email)])
+router = APIRouter(prefix="/api")
 
-@router.get("/users")
+@protected_router.get("/users")
 async def get_users(db_session=Depends(db_session)):
     query = select(User)
     result = db_session.execute(query)
     return result.scalars().all()
 
-@router.head("/users/{user_id}", summary="Sprawdza, czy użytkownik o podanym id istnieje") # TIL
+@protected_router.head("/users/{user_id}", summary="Sprawdza, czy użytkownik o podanym id istnieje") # TIL
 async def head_user(user_id: int, db_session=Depends(db_session)):
     query = select(exists().where(User.id == user_id))
     result = db_session.execute(query).scalar()
