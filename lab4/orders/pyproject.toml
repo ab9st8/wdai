@@ -1,0 +1,14 @@
+[project]
+name = "orders"
+version = "0.1.0"
+description = "Orders service"
+requires-python = ">=3.9"
+dependencies = [
+    "fastapi==0.124.4",
+    "requests==2.32.5",
+    "pyjwt==2.10.1",
+    "uvicorn==0.38.0",
+    "sqlalchemy>=2.0.45",
+    "psycopg2-binary>=2.9.11",
+]
+
