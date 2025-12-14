@@ -5,12 +5,13 @@ from fastapi import Depends, Request, APIRouter, HTTPException, status
 from fastapi.responses import JSONResponse
 from commons.model.base import db_session
 from commons.model.domain.user import UserDTO
-from sqlalchemy.sql import select, exists
 from commons.model.orm.user import User
+from .auth import get_current_user_email
+from sqlalchemy.sql import select, exists
 from pwdlib import PasswordHash
 import jwt
 
-router = APIRouter(prefix="/api")
+router = APIRouter(prefix="/api", dependencies=[Depends(get_current_user_email)])
 
 @router.get("/users")
 async def get_users(db_session=Depends(db_session)):
