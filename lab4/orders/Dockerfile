@@ -4,7 +4,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 ADD orders /app
-ADD model /model
+ADD commons /commons
 
 WORKDIR /app
 
@@ -17,7 +17,7 @@ ENV UV_PROJECT_ENVIRONMENT=/usr/local
 RUN pip install --upgrade pip setuptools wheel uv
 
 RUN uv sync
-RUN pip install -e /model
+RUN pip install -e /commons
 
 COPY . /app
 

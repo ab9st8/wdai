@@ -4,9 +4,9 @@ from fastapi import APIRouter, Depends, HTTPException, status, Request
 from fastapi.responses import JSONResponse
 from sqlalchemy.sql import select, exists
 
-from model.orm.order import Order
-from model.domain.order import OrderDTO
-from model.base import db_session
+from commons.orm.order import Order
+from commons.domain.order import OrderDTO
+from commons.base import db_session
 
 
 router = APIRouter(prefix="/api")

@@ -3,9 +3,9 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "model"
+name = "commons"
 version = "0.1.0"
-description = "Common ORM model definitions"
+description = "Common ORM commons definitions"
 requires-python = ">=3.9"
 dependencies = [
     "psycopg[binary]>=3.2.13",

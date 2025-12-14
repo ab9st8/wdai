@@ -12,7 +12,7 @@ services:
       - db
     volumes:
       - ./books/:/app/
-      - ./model/:/model/
+      - ./commons/:/commons/
 
   orders:
     build:
@@ -27,7 +27,7 @@ services:
       - db
     volumes:
       - ./orders/:/app/
-      - ./model/:/model/
+      - ./commons/:/commons/
 
   users:
     build:
@@ -42,7 +42,7 @@ services:
       - db
     volumes:
       - ./users/:/app/
-      - ./model/:/model/
+      - ./commons/:/commons/
 
   db:
     image: postgres:17.2-alpine

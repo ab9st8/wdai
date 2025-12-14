@@ -1,4 +1,4 @@
-from model.base import Base
+from commons.base import Base
 from .book import Book
 from .user import User
 from sqlalchemy import ForeignKey

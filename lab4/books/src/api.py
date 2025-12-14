@@ -1,9 +1,9 @@
 from pydantic import ValidationError
 from fastapi import Depends, Request, APIRouter, HTTPException, status, Response
 from sqlalchemy.sql import select, exists
-from model.domain.book import BookDTO
-from model.orm.book import Book
-from model.base.base import db_session
+from commons.domain.book import BookDTO
+from commons.orm.book import Book
+from commons.base.base import db_session
 
 router = APIRouter(prefix="/api")
 

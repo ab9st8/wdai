@@ -4,7 +4,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 ADD books /app
-ADD model /model
+ADD commons /commons
 
 WORKDIR /app
 
@@ -19,7 +19,7 @@ RUN pip install --upgrade pip setuptools wheel uv
 # do uv sync first, then install local package.
 # other way around causes uv sync to remove the local package lul
 RUN uv sync
-RUN pip install -e /model
+RUN pip install -e /commons
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 CMD ["uv", "run", "python", "-m", "src.main"]
