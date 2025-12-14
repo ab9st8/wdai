@@ -26,7 +26,7 @@ services:
     depends_on:
       - db
     volumes:
-      - ./books/:/app/
+      - ./orders/:/app/
       - ./model/:/model/
 
   users:
@@ -41,7 +41,7 @@ services:
     depends_on:
       - db
     volumes:
-      - ./books/:/app/
+      - ./users/:/app/
       - ./model/:/model/
 
   db:
