@@ -23,12 +23,12 @@ async def get_users(db_session=Depends(db_session)):
     return result.scalars().all()
 
 @router.head("/users/{user_id}", summary="Sprawdza, czy użytkownik o podanym id istnieje") # TIL
-async def get_user(user_id: int, db_session=Depends(db_session)):
+async def head_user(user_id: int, db_session=Depends(db_session)):
     query = select(exists().where(User.id == user_id))
     result = db_session.execute(query).scalar()
-    if result is None:
+    if not result:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-        
+
     return Response(status_code=status.HTTP_200_OK)
 
 @router.post(
