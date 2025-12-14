@@ -1,7 +1,7 @@
 from pydantic import ValidationError
 from fastapi import Depends, Request, APIRouter, HTTPException, status, Response
-from sqlalchemy.sql import select
-from model.domain.book import BookD
+from sqlalchemy.sql import select, exists
+from model.domain.book import BookDTO
 from model.orm.book import Book
 from model.base.base import db_session
 
@@ -21,10 +21,19 @@ async def get_book(book_id: int, db_session=Depends(db_session)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
     return result
 
+@router.head("/books/{book_id}", summary="Sprawdza, czy książka o podanym id istnieje")
+async def head_book(book_id: int, db_session=Depends(db_session)):
+    query = select(exists().where(Book.id == book_id))
+    result = db_session.execute(query).scalar()
+    if not result:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
+
+    return Response(status_code=status.HTTP_200_OK)
+
 @router.post("/books", summary="Dodaje nową książkę (title, author, year) i zwraca jej id")
 async def post_book(request: Request, db_session=Depends(db_session)):
     try:
-        book = BookD.model_validate(await request.json())
+        book = BookDTO.model_validate(await request.json())
     except ValidationError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) 
     except Exception as e:
