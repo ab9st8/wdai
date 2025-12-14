@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
 
-class UserD(BaseModel):
-    username: str
-    email: str = Field(regex=r'^[\w\.-]+@[\w\.-]+\.\w{2,4}$') 
+class UserDTO(BaseModel):
+    email: str = Field(pattern=r'^[\w\.-]+@[\w\.-]+\.\w{2,4}$') 
+    password: str

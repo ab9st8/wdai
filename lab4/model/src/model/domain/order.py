@@ -1,9 +1,6 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
-from model.domain.book import BookD
-from model.domain.user import UserD
-
-class OrderD(BaseModel):
-    user: UserD
-    book: BookD
-    quantity: int
+class OrderDTO(BaseModel):
+    user_id: int
+    book_id: int
+    quantity: int = Field(gt=0)

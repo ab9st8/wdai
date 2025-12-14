@@ -4,6 +4,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 class Book(Base):
     __tablename__ = "books"
+    __table_args__ = {'schema': 'public'}
     
     id: Mapped[int] = mapped_column(primary_key=True)
     title: Mapped[str]
