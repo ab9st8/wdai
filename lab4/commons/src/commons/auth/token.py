@@ -1,5 +1,6 @@
 from typing import Annotated 
-from fastapi import Depends
+from fastapi import Depends, HTTPException, status
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel, Field
 from pwdlib import PasswordHash
 import jwt
@@ -7,7 +8,9 @@ from datetime import datetime, timedelta
 
 SECRET_KEY = "+DOrOCx8o1QVvGOnKJdI0zJEw2xx54OcWTaWRjd4R4E="
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 1
+
+security = HTTPBearer()
 
 
 class Token(BaseModel):
@@ -35,7 +38,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
     else:
-        expire = datetime.utcnow() + timedelta(minutes=15)
+        expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
 
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
@@ -44,3 +47,25 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
 
 def decode_jwt(token: str):
     return jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+
+
+
+async def get_current_user_email(
+    token: Annotated[HTTPAuthorizationCredentials | None, Depends(security)]
+):
+    if token is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+
+    try:
+        payload = decode_jwt(token.credentials)
+        
+        email = payload.get("sub")
+
+        if email is None:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+        token_data = TokenData(email=email)
+
+    except jwt.exceptions.InvalidTokenError:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+
+    return token_data
