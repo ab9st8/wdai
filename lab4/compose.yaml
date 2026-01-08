@@ -1,0 +1,61 @@
+services:
+  books:
+    build:
+      context: .
+      dockerfile: ./books/Dockerfile
+    restart: always
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/lab4
+    ports:
+      - 2137:3000
+    depends_on:
+      - db
+    volumes:
+      - ./books/:/app/
+      - ./commons/:/commons/
+
+  orders:
+    build:
+      context: .
+      dockerfile: ./orders/Dockerfile
+    restart: always
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/lab4
+    ports:
+      - 1337:3000
+    depends_on:
+      - db
+    volumes:
+      - ./orders/:/app/
+      - ./commons/:/commons/
+
+  users:
+    build:
+      context: .
+      dockerfile: ./users/Dockerfile
+    restart: always
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/lab4
+    ports:
+      - 6969:3000
+    depends_on:
+      - db
+    volumes:
+      - ./users/:/app/
+      - ./commons/:/commons/
+
+  db:
+    image: postgres:17.2-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=lab4
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./db/ddl.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - 5432:5432
+  
+volumes:
+  db-data: {}

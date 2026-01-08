@@ -1,0 +1,10 @@
+Metadata-Version: 2.4
+Name: commons
+Version: 0.1.0
+Summary: Common definitions
+Requires-Python: >=3.9
+Requires-Dist: cryptography>=46.0.3
+Requires-Dist: psycopg[binary]>=3.2.13
+Requires-Dist: pwdlib[argon2]>=0.2.1
+Requires-Dist: pyjwt>=2.10.1
+Requires-Dist: sqlalchemy==2.0.45
