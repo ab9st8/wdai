@@ -4,22 +4,24 @@ from fastapi import APIRouter, Depends, HTTPException, status, Request
 from fastapi.responses import JSONResponse
 from sqlalchemy.sql import select, exists
 
+from commons.auth.token import get_current_user_email
 from commons.model.orm.order import Order
 from commons.model.domain.order import OrderDTO
 from commons.model.base import db_session
 
 
 router = APIRouter(prefix="/api")
+protected_router = APIRouter(prefix="/api", dependencies=[Depends(get_current_user_email)])
 
 
-@router.get("/orders/{user_id}", summary="Zwraca listę zamówień użytkownika")
+@protected_router.get("/orders/{user_id}", summary="Zwraca listę zamówień użytkownika")
 async def get_orders(user_id: int, db_session=Depends(db_session)):
     query = select(Order).where(Order.user_id == user_id)
     result = db_session.execute(query)
     return result.scalars().all()
 
 
-@router.post(
+@protected_router.post(
     "/orders",
     summary="Dodaje zamówienie (userId, bookId, quantity) i zwraca id zamówienia. Sprawdź, czy bookId istnieje (należy wykorzystać serwis 1. Nie wykonywać bezpośrednio zapytania do bazy!).",
 )
@@ -66,7 +68,7 @@ async def post_order(request: Request, db_session=Depends(db_session)):
     return new_order.id
 
 
-@router.delete("/orders/{order_id}", summary="Usuwa zamówienie o podanym id")
+@protected_router.delete("/orders/{order_id}", summary="Usuwa zamówienie o podanym id")
 async def delete_order(order_id: int, db_session=Depends(db_session)):
     query = select(Order).where(Order.id == order_id)
     result = db_session.execute(query)
@@ -95,7 +97,7 @@ async def head_order(order_id: int, db_session=Depends(db_session)):
     return JSONResponse(status_code=status.HTTP_200_OK, content=None)
 
 
-@router.patch("/orders/{order_id}", summary="Aktualizuje ilość książek w zamówieniu")
+@protected_router.patch("/orders/{order_id}", summary="Aktualizuje ilość książek w zamówieniu")
 async def update_order_quantity(
     request: Request, order_id: int, db_session=Depends(db_session)
 ):

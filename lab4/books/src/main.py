@@ -1,8 +1,8 @@
 from fastapi import FastAPI
-from .api import router
+from .api import protected_router
 
 app = FastAPI()
-app.include_router(router)
+app.include_router(protected_router)
 
 if __name__ == "__main__":
 	import uvicorn

@@ -1,19 +1,21 @@
 from pydantic import ValidationError
 from fastapi import Depends, Request, APIRouter, HTTPException, status, Response
 from sqlalchemy.sql import select, exists
+from commons.auth.token import get_current_user_email
 from commons.model.domain.book import BookDTO
 from commons.model.orm.book import Book
 from commons.model.base.base import db_session
 
 router = APIRouter(prefix="/api")
+protected_router = APIRouter(prefix="/api", dependencies=[Depends(get_current_user_email)])
 
-@router.get("/books", summary="Zwraca listę wszystkich książek")
+@protected_router.get("/books", summary="Zwraca listę wszystkich książek")
 async def get_books(db_session=Depends(db_session)):
     query = select(Book)
     result = db_session.execute(query)
     return result.scalars().all()
 
-@router.get("/books/{book_id}", summary="Zwraca dane konkretnej książki")
+@protected_router.get("/books/{book_id}", summary="Zwraca dane konkretnej książki")
 async def get_book(book_id: int, db_session=Depends(db_session)):
     query = select(Book).where(Book.id == book_id)
     result = db_session.execute(query).scalar_one_or_none()
@@ -30,7 +32,7 @@ async def head_book(book_id: int, db_session=Depends(db_session)):
 
     return Response(status_code=status.HTTP_200_OK)
 
-@router.post("/books", summary="Dodaje nową książkę (title, author, year) i zwraca jej id")
+@protected_router.post("/books", summary="Dodaje nową książkę (title, author, year) i zwraca jej id")
 async def post_book(request: Request, db_session=Depends(db_session)):
     try:
         book = BookDTO.model_validate(await request.json())
@@ -49,7 +51,7 @@ async def post_book(request: Request, db_session=Depends(db_session)):
     db_session.refresh(new_book)
     return new_book.id
 
-@router.delete("/books/{book_id}", summary="Usuwa książkę o podanym id")
+@protected_router.delete("/books/{book_id}", summary="Usuwa książkę o podanym id")
 async def delete_book(book_id: int, db_session=Depends(db_session)) -> Response:
     query = select(Book).where(Book.id == book_id)
     book = db_session.execute(query).scalar_one_or_none()
